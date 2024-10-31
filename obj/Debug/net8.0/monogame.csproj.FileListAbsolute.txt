@@ -27,3 +27,4 @@ C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\ball.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\ball_mad.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\HudFont.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\Controls\Button.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\ball_jump.xnb

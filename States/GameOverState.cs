@@ -1,23 +1,40 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using monogame.Controls;
 
 namespace monogame.States
 {
     public class GameOverState : State
-    {     
-        public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content) 
+    {
+        private List<Component> _components;
+        public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
         : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = true;
+
+            Game1._gameState = null;
+            GameState.score = 0;
+
+            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
+            var buttonFont = _content.Load<SpriteFont>("HudFont");
+
+            var continueGameButton = new Button(buttonTexture, buttonFont)
+            {
+                Position = new Vector2(300, 250),
+                Text = "Continue Game",
+            };
+
+            continueGameButton.Click += ContinueGameButton_Click;
+
+            _components = new List<Component>()
+            {
+                continueGameButton
+            };
         }
+
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -25,8 +42,19 @@ namespace monogame.States
 
             spriteBatch.DrawString(GameState.hudFont, "Game Over: " + GameState.score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
+            foreach (var component in _components)
+            {
+                component.Draw(gameTime, spriteBatch);
+            }
+
             spriteBatch.End();
         }
+
+        private void ContinueGameButton_Click(object sender, EventArgs e)
+        {
+            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+        }
+
 
         public override void PostUpdate(GameTime gameTime)
         {
@@ -35,7 +63,10 @@ namespace monogame.States
 
         public override void Update(GameTime gameTime)
         {
-            //throw new NotImplementedException();
+            foreach (var component in _components)
+            {
+                component.Update(gameTime);
+            }
         }
     }
 }

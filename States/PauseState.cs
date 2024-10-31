@@ -1,21 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using monogame.Controls;
 
 namespace monogame.States
 {
     public class PauseState : State
-    {     
+    {
         private List<Component> _components;
-        public PauseState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content) 
+        public PauseState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
         : base(game, graphicsDevice, content)
         {
             game.IsMouseVisible = true;
@@ -53,7 +48,9 @@ namespace monogame.States
             spriteBatch.DrawString(GameState.hudFont, "Paused: " + GameState.score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
             foreach (var component in _components)
+            {
                 component.Draw(gameTime, spriteBatch);
+            }
 
             spriteBatch.End();
         }
@@ -76,7 +73,9 @@ namespace monogame.States
         public override void Update(GameTime gameTime)
         {
             foreach (var component in _components)
+            {
                 component.Update(gameTime);
+            }
         }
     }
 }
