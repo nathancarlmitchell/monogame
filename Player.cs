@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,31 +8,55 @@ namespace monogame
     public class Player : Object
     {
         protected ContentManager _content;
-        private Texture2D playerTexture;
-        private Texture2D playerJumpTexture;
-        public Texture2D currentTexture;
+        private AnimatedTexture playerIdleTexture, playerJumpTexture;
+        public AnimatedTexture currentTexture;
+        // The rotation of the character on screen
+        private const float rotation = 0;
+        // The scale of the character, how big it is drawn
+        private const float scale = 1f;
+        // The draw order of the sprite
+        private const float depth = 0.5f;
+        // How many frames/images are included in the animation
+        private const int frames = 2;
+        // How many frames should be drawn each second, how fast does the animation run?
+        private const int framesPerSec = 4;
         public int velocity = 0;
-        public int maxVelocity = 12;
+        private int jumpVelocity = 12;
+        private const int maxVelocity = 64;
 
         public Player(ContentManager content)
         {
             _content = content;
 
-            playerTexture = _content.Load<Texture2D>("ball");
-            playerJumpTexture = _content.Load<Texture2D>("ball_jump");
+            this.Height = 64;
+            this.Width = 64;
 
-            currentTexture = playerTexture;
+            //playerTexture = _content.Load<Texture2D>("ball");
+            //playerJumpTexture = _content.Load<Texture2D>("ball_jump");
+
+            playerIdleTexture = new AnimatedTexture(new Vector2(this.Height / 2, this.Width / 2), rotation, scale, depth);
+            // "AnimatedCharacter" is the name of the sprite asset in the project.
+            playerIdleTexture.Load(_content, "anim_idle", frames, framesPerSec);
+
+            playerJumpTexture = new AnimatedTexture(new Vector2(this.Height / 2, this.Width / 2), rotation, scale, depth);
+            // "AnimatedCharacter" is the name of the sprite asset in the project.
+            playerJumpTexture.Load(_content, "anim_jump", frames, framesPerSec);
+
+            currentTexture = playerIdleTexture;
         }
 
         public void ChangeVelocity(int change)
         {
-            if (Math.Abs(this.velocity) >= maxVelocity + 1)
-                if (currentTexture != playerTexture)
-                {
-                    currentTexture = playerTexture;
-                    return;
-                }
-            this.velocity += change;
+            if (currentTexture != playerIdleTexture)
+            {
+                currentTexture = playerIdleTexture;
+            }
+
+            if (Math.Abs(velocity) >= maxVelocity + 1)
+            {
+                return;
+            }
+            velocity += change;
         }
 
         public void Jump()
@@ -40,11 +65,11 @@ namespace monogame
             {
                 if (currentTexture != playerJumpTexture)
                 {
-                    currentTexture = playerJumpTexture;  
+                    currentTexture = playerJumpTexture;
                 }
                 return;
             }
-            this.velocity = maxVelocity;
+            this.velocity = jumpVelocity;
         }
     }
 }

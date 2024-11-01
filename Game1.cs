@@ -8,10 +8,9 @@ namespace monogame
     public class Game1 : Game
     {
         public GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        private State _currentState;
-        private State _nextState;
+        public SpriteBatch spriteBatch;
         public static State _gameState;
+        private State _currentState, _nextState;
 
         public void ChangeState(State state)
         {

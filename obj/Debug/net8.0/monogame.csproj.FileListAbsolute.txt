@@ -28,3 +28,7 @@ C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\ball_mad.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\HudFont.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\Controls\Button.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\ball_jump.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\AnimatedCharacter.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\anim_jump.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\anim_idle.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\bg.xnb

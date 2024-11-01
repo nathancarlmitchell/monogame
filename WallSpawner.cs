@@ -8,8 +8,7 @@ namespace monogame
         private static Random rand = new Random();
         private static int minHeight = 20;
         private List<Object> objectList;
-        private Object obj1;
-        private Object obj2;
+        private Object obj1, obj2;
 
         public List<Object> Spawn(int ScreenWidth, int ScreenHeight)
         {

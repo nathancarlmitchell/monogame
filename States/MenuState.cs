@@ -14,7 +14,7 @@ namespace monogame.States
         public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
-            game.IsMouseVisible = true;
+            _game.IsMouseVisible = true;
 
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("HudFont");

@@ -9,13 +9,12 @@ namespace monogame.States
     public class GameState : State
     {
         public static SpriteFont hudFont;
-        private Texture2D wallTexture;
-        public static int score = 0;
+        private Texture2D wallTexture, backgroundTexture;
         private Player player;
         private List<Object> enemyArray;
         private WallSpawner spawner;
-        private int ScreenHeight;
-        private int ScreenWidth;
+        private int ScreenHeight, ScreenWidth;
+        public static int score = 0;
 
         public GameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
@@ -23,12 +22,14 @@ namespace monogame.States
             ScreenHeight = _graphicsDevice.Viewport.Height;
             ScreenWidth = _graphicsDevice.Viewport.Width;
 
-            game.IsMouseVisible = false;
+            _game.IsMouseVisible = false;
 
             hudFont = _content.Load<SpriteFont>("HudFont");
 
             wallTexture = new Texture2D(_graphicsDevice, 1, 1);
             wallTexture.SetData(new[] { Color.White });
+
+            backgroundTexture = _content.Load<Texture2D>("bg");
 
             enemyArray = new List<Object>();
 
@@ -47,19 +48,24 @@ namespace monogame.States
         {
             spriteBatch.Begin();
 
+            spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
+            
+            // Replacing the normal SpriteBatch.Draw call to use the version from the "AnimatedTexture" class instead
+            player.currentTexture.DrawFrame(spriteBatch, new Vector2(player.X, player.Y));
+
             spriteBatch.DrawString(hudFont, "" + score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
-            spriteBatch.Draw(
-                    player.currentTexture,
-                    new Vector2(player.X, player.Y),
-                    null, // An optional region on the texture which will be rendered. If null - draws full texture.
-                    Color.White, // color mask
-                    0f, // rotation
-                    new Vector2(player.Width / 2, player.Width / 2), // origin
-                    Vector2.One, // scale
-                    SpriteEffects.None,
-                    0f // rotation
-                );
+            // spriteBatch.Draw(
+            //         player.currentTexture,
+            //         new Vector2(player.X, player.Y),
+            //         null, // An optional region on the texture which will be rendered. If null - draws full texture.
+            //         Color.White, // color mask
+            //         0f, // rotation
+            //         new Vector2(player.Width / 2, player.Width / 2), // origin
+            //         Vector2.One, // scale
+            //         SpriteEffects.None,
+            //         0f // rotation
+            //     );
 
             for (int i = 0; i < enemyArray.Count; i++)
             {
@@ -77,6 +83,10 @@ namespace monogame.States
         public override void Update(GameTime gameTime)
         {
             score += 1;
+
+            // TODO: Add your update logic here
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            player.currentTexture.UpdateFrame(elapsed);
 
             for (int i = 0; i < enemyArray.Count; i++)
             {
