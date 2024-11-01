@@ -7,6 +7,7 @@ namespace monogame
     {
         private static Random rand = new Random();
         private static int minHeight = 20;
+        private static int width = 64;
         private List<Object> objectList;
         private Object obj1, obj2;
 
@@ -23,12 +24,12 @@ namespace monogame
 
             obj1.X = ScreenWidth;
             obj1.Y = 0;
-            obj1.Width = 16;
+            obj1.Width = width;
             obj1.Height = height;
 
             obj2.X = ScreenWidth;
             obj2.Y = height + gap;
-            obj2.Width = 16;
+            obj2.Width = width;
             obj2.Height = ScreenHeight - height - gap;
 
             objectList.Add(obj1);

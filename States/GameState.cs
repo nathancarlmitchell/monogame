@@ -69,7 +69,7 @@ namespace monogame.States
 
             for (int i = 0; i < enemyArray.Count; i++)
             {
-                spriteBatch.Draw(wallTexture, new Rectangle(enemyArray[i].X, enemyArray[i].Y, enemyArray[i].Width, enemyArray[i].Height), null, Color.Black);
+                spriteBatch.Draw(wallTexture, new Rectangle(enemyArray[i].X, enemyArray[i].Y, enemyArray[i].Width, enemyArray[i].Height), null, Color.ForestGreen);
             }
 
             spriteBatch.End();

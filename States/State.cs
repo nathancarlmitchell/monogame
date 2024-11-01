@@ -10,6 +10,7 @@ namespace monogame.States
         protected ContentManager _content;
         protected GraphicsDevice _graphicsDevice;
         protected Game1 _game;
+        public static int controlCenterWidth;
 
         #endregion
 
@@ -23,6 +24,8 @@ namespace monogame.States
             _game = game;
             _graphicsDevice = graphicsDevice;
             _content = content;
+            
+            controlCenterWidth = (_graphicsDevice.Viewport.Width / 2) - 80;
         }
 
         public abstract void Update(GameTime gameTime);

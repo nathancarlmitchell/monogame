@@ -21,17 +21,17 @@ namespace monogame.States
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("HudFont");
 
-            var continueGameButton = new Button(buttonTexture, buttonFont)
+            var newGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 250),
-                Text = "Continue Game",
+                Position = new Vector2(controlCenterWidth, 250),
+                Text = "New Game",
             };
 
-            continueGameButton.Click += ContinueGameButton_Click;
+            newGameButton.Click += NewGameButton_Click;
 
             _components = new List<Component>()
             {
-                continueGameButton
+                newGameButton
             };
         }
 
@@ -50,7 +50,7 @@ namespace monogame.States
             spriteBatch.End();
         }
 
-        private void ContinueGameButton_Click(object sender, EventArgs e)
+        private void NewGameButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }

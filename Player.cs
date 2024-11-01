@@ -20,7 +20,7 @@ namespace monogame
         private const int frames = 2;
         // How many frames should be drawn each second, how fast does the animation run?
         private const int framesPerSec = 4;
-        public int velocity = 0;
+        public int velocity = 12;
         private int jumpVelocity = 12;
         private const int maxVelocity = 64;
 

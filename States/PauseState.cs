@@ -20,7 +20,7 @@ namespace monogame.States
 
             var continueGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 250),
+                Position = new Vector2(controlCenterWidth, 250),
                 Text = "Continue Game",
             };
 
@@ -28,7 +28,7 @@ namespace monogame.States
 
             var quitGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 300),
+                Position = new Vector2(controlCenterWidth, 300),
                 Text = "Quit Game",
             };
 
