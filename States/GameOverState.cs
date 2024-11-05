@@ -10,10 +10,12 @@ namespace monogame.States
     public class GameOverState : State
     {
         private List<Component> _components;
+        private int _score;
         public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
         : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = true;
+            _score = GameState.score;
 
             Game1._gameState = null;
             GameState.score = 0;
@@ -40,7 +42,8 @@ namespace monogame.States
         {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(GameState.hudFont, "Game Over: " + GameState.score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            spriteBatch.DrawString(GameState.hudFont, "Game Over: " + _score, new Vector2(controlCenterWidth, controlCenterHeight),
+             Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
             foreach (var component in _components)
             {
