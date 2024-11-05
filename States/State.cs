@@ -10,8 +10,10 @@ namespace monogame.States
         protected ContentManager _content;
         protected GraphicsDevice _graphicsDevice;
         protected Game1 _game;
-        public static int controlCenterHeight;
-        public static int controlCenterWidth;
+        private static int _centerHeight;
+        private static int _centerWidth;
+        private static int _screenHeight;
+        private static int _screenWidth;
 
         #endregion
 
@@ -26,8 +28,31 @@ namespace monogame.States
             _graphicsDevice = graphicsDevice;
             _content = content;
             
-            controlCenterWidth = (_graphicsDevice.Viewport.Width / 2) - 80;
-            controlCenterHeight = (_graphicsDevice.Viewport.Height / 2);
+            _centerWidth = (_graphicsDevice.Viewport.Width / 2) - 80;
+            _centerHeight = (_graphicsDevice.Viewport.Height / 2);
+
+            _screenHeight = _graphicsDevice.Viewport.Height;
+            _screenWidth = _graphicsDevice.Viewport.Width;
+        }
+
+        public static int ScreenHeight
+        {
+            get { return _screenHeight; }
+        }
+
+        public int ScreenWidth
+        {
+            get { return _screenWidth; }
+        }
+
+        public int CenterHeight
+        {
+            get { return _centerHeight; }
+        }
+
+        public int CenterWidth
+        {
+            get { return _centerWidth; }
         }
 
         public abstract void Update(GameTime gameTime);

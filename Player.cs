@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using monogame.States;
 
 namespace monogame
 {
@@ -20,8 +21,8 @@ namespace monogame
         private const int frames = 2;
         // How many frames should be drawn each second, how fast does the animation run?
         private const int framesPerSec = 4;
-        public int velocity = 12;
-        private int jumpVelocity = 12;
+        public int Velocity { get; set; }
+        private const int jumpVelocity = 12;
         private const int maxVelocity = 64;
 
         public Player(ContentManager content)
@@ -30,16 +31,12 @@ namespace monogame
 
             this.Height = 64;
             this.Width = 64;
-
-            //playerTexture = _content.Load<Texture2D>("ball");
-            //playerJumpTexture = _content.Load<Texture2D>("ball_jump");
+            this.Velocity = 12;
 
             playerIdleTexture = new AnimatedTexture(new Vector2(this.Height / 2, this.Width / 2), rotation, scale, depth);
-            // "AnimatedCharacter" is the name of the sprite asset in the project.
             playerIdleTexture.Load(_content, "anim_idle", frames, framesPerSec);
 
             playerJumpTexture = new AnimatedTexture(new Vector2(this.Height / 2, this.Width / 2), rotation, scale, depth);
-            // "AnimatedCharacter" is the name of the sprite asset in the project.
             playerJumpTexture.Load(_content, "anim_jump", frames, framesPerSec);
 
             currentTexture = playerIdleTexture;
@@ -52,16 +49,17 @@ namespace monogame
                 currentTexture = playerIdleTexture;
             }
 
-            if (Math.Abs(velocity) >= maxVelocity + 1)
+            if (Math.Abs(this.Velocity) >= maxVelocity + 1)
             {
                 return;
             }
-            velocity += change;
+            this.Velocity += change;
+            Bounce();
         }
 
         public void Jump()
         {
-            if (this.velocity > -2)
+            if (this.Velocity > -2)
             {
                 if (currentTexture != playerJumpTexture)
                 {
@@ -69,7 +67,20 @@ namespace monogame
                 }
                 return;
             }
-            this.velocity = jumpVelocity;
+            this.Velocity = jumpVelocity;
+        }
+
+        public void Bounce()
+        {
+            if (this.Y >= GameState.ScreenHeight - this.Height / 2)
+            {
+                if (this.Velocity == 0)
+                {
+                    this.Velocity = 2;
+                    return;
+                }
+                this.Velocity = Math.Abs(this.Velocity) / 2;
+            }
         }
     }
 }

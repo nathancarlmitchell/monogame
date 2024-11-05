@@ -10,22 +10,22 @@ namespace monogame.States
     public class GameOverState : State
     {
         private List<Component> _components;
-        private int _score;
+        private int currentScore;
         public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
         : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = true;
-            _score = GameState.score;
+            currentScore = GameState.Score;
 
             Game1._gameState = null;
-            GameState.score = 0;
+            GameState.Score = 0;
 
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("HudFont");
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(controlCenterWidth, 250),
+                Position = new Vector2(CenterWidth, 250),
                 Text = "New Game",
             };
 
@@ -42,7 +42,7 @@ namespace monogame.States
         {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(GameState.hudFont, "Game Over: " + _score, new Vector2(controlCenterWidth, controlCenterHeight),
+            spriteBatch.DrawString(GameState.hudFont, "Game Over: " + currentScore, new Vector2(CenterWidth, CenterHeight),
              Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
             foreach (var component in _components)

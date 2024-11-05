@@ -20,7 +20,7 @@ namespace monogame.States
 
             var continueGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(controlCenterWidth, 250),
+                Position = new Vector2(CenterWidth, 250),
                 Text = "Continue Game",
             };
 
@@ -28,7 +28,7 @@ namespace monogame.States
 
             var quitGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(controlCenterWidth, 300),
+                Position = new Vector2(CenterWidth, 300),
                 Text = "Quit Game",
             };
 
@@ -45,7 +45,7 @@ namespace monogame.States
         {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(GameState.hudFont, "Paused: " + GameState.score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            spriteBatch.DrawString(GameState.hudFont, "Paused: " + GameState.Score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
             foreach (var component in _components)
             {

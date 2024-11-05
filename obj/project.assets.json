@@ -238,19 +238,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Owner\\.nuget\\packages\\": {}
+    "C:\\Users\\Nathan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Owner\\monogame-main\\monogame.csproj",
+      "projectUniqueName": "C:\\Users\\Nathan\\monogame\\monogame.csproj",
       "projectName": "monogame",
-      "projectPath": "C:\\Users\\Owner\\monogame-main\\monogame.csproj",
-      "packagesPath": "C:\\Users\\Owner\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Owner\\monogame-main\\obj\\",
+      "projectPath": "C:\\Users\\Nathan\\monogame\\monogame.csproj",
+      "packagesPath": "C:\\Users\\Nathan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Nathan\\monogame\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Owner\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Nathan\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
