@@ -17,10 +17,12 @@ namespace monogame
             obj1 = new Object();
             obj2 = new Object();
 
-            int gap = 192;
+            int minGap = 160;
+            int maxGap = 192;
+            int gap = (int)Math.Floor(rand.NextDouble() * (maxGap - minGap + 1) + minGap);
             int maxHeight = ScreenHeight - gap;
-            int height = (int)Math.Floor(rand.NextDouble() * (maxHeight - minHeight + 1) + minHeight); // ???
-            //int gap = (int)Math.Floor(rand.NextDouble() * (maxGap - minGap + 1) + minGap);
+            int height = (int)Math.Floor(rand.NextDouble() * (maxHeight - minHeight + 1) + minHeight);
+            
 
             obj1.X = ScreenWidth;
             obj1.Y = 0;

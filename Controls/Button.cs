@@ -5,7 +5,7 @@ using System;
 
 namespace monogame.Controls
 {
-    public class Button : Component
+    public class Button
     {
         #region Fields
         private MouseState _currentMouse;
@@ -42,7 +42,7 @@ namespace monogame.Controls
             PenColour = Color.Black;
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             var colour = Color.White;
 
@@ -62,7 +62,7 @@ namespace monogame.Controls
             }
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             _previousMouse = _currentMouse;
             _currentMouse = Mouse.GetState();

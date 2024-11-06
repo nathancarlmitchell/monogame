@@ -9,7 +9,8 @@ namespace monogame.States
 {
     public class MenuState : State
     {
-        private List<Component> _components;
+        private List<Button> _components;
+        private Menu _mainMenu;
 
         public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
@@ -18,6 +19,8 @@ namespace monogame.States
 
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("HudFont");
+
+            MenuState.ControlWidthCenter = (_graphicsDevice.Viewport.Width / 2) - (buttonTexture.Width / 2);
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
@@ -43,22 +46,21 @@ namespace monogame.States
 
             quitGameButton.Click += QuitGameButton_Click;
 
-            _components = new List<Component>()
+            _components = new List<Button>()
             {
                 newGameButton,
                 loadGameButton,
                 quitGameButton,
             };
+
+            _mainMenu = new Menu(_components);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
+        {          
             spriteBatch.Begin();
 
-            foreach (var component in _components)
-            {
-                component.Draw(gameTime, spriteBatch);
-            }
+            _mainMenu.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }

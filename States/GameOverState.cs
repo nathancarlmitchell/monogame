@@ -9,7 +9,8 @@ namespace monogame.States
 {
     public class GameOverState : State
     {
-        private List<Component> _components;
+        private List<Button> _components;
+        private Menu _menu;
         private int currentScore;
         public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
         : base(game, graphicsDevice, content)
@@ -31,10 +32,12 @@ namespace monogame.States
 
             newGameButton.Click += NewGameButton_Click;
 
-            _components = new List<Component>()
+            _components = new List<Button>()
             {
                 newGameButton
             };
+
+            _menu = new Menu(_components);
         }
 
 
@@ -42,13 +45,10 @@ namespace monogame.States
         {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(GameState.hudFont, "Game Over: " + currentScore, new Vector2(CenterWidth, CenterHeight),
-             Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            _menu.Draw(gameTime, spriteBatch);
 
-            foreach (var component in _components)
-            {
-                component.Draw(gameTime, spriteBatch);
-            }
+            spriteBatch.DrawString(GameState.hudFont, "Game Over: " + currentScore, new Vector2(CenterWidth, CenterHeight/2),
+                Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
             spriteBatch.End();
         }

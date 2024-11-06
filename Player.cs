@@ -47,6 +47,7 @@ namespace monogame
             if (currentTexture != playerIdleTexture)
             {
                 currentTexture = playerIdleTexture;
+                //currentTexture.Reset();
             }
 
             if (Math.Abs(this.Velocity) >= maxVelocity + 1)
@@ -64,6 +65,7 @@ namespace monogame
                 if (currentTexture != playerJumpTexture)
                 {
                     currentTexture = playerJumpTexture;
+                    //currentTexture.Reset();
                 }
                 return;
             }

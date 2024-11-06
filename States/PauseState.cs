@@ -9,7 +9,8 @@ namespace monogame.States
 {
     public class PauseState : State
     {
-        private List<Component> _components;
+        private List<Button> _components;
+        private Menu _menu;
         public PauseState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
         : base(game, graphicsDevice, content)
         {
@@ -34,23 +35,23 @@ namespace monogame.States
 
             quitGameButton.Click += QuitGameButton_Click;
 
-            _components = new List<Component>()
+            _components = new List<Button>()
             {
                 continueGameButton,
                 quitGameButton,
             };
+
+            _menu = new Menu(_components);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(GameState.hudFont, "Paused: " + GameState.Score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            spriteBatch.DrawString(GameState.hudFont, "Paused: " + GameState.Score, new Vector2(CenterWidth, CenterHeight/2),
+                Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
-            foreach (var component in _components)
-            {
-                component.Draw(gameTime, spriteBatch);
-            }
+            _menu.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }
