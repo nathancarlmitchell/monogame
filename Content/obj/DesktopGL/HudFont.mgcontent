@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>c:/Users/Nathan/monogame/Content/HudFont.spritefont</SourceFile>
-  <SourceTime>2024-08-16T13:04:56-04:00</SourceTime>
+  <SourceTime>2024-11-05T17:01:41.657291-05:00</SourceTime>
   <DestFile>c:/Users/Nathan/monogame/Content/bin/DesktopGL/HudFont.xnb</DestFile>
-  <DestTime>2024-10-30T09:49:49.9915587-04:00</DestTime>
+  <DestTime>2024-11-07T12:36:31.6515652-05:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2024-08-16T13:05:56-04:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

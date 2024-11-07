@@ -35,7 +35,7 @@ namespace monogame.States
             _screenHeight = _graphicsDevice.Viewport.Height;
             _screenWidth = _graphicsDevice.Viewport.Width;
 
-            _controlWidthCenter = (_graphicsDevice.Viewport.Width / 2);
+            _controlWidthCenter = (_graphicsDevice.Viewport.Width / 2) - 80;
         }
 
         public static int ScreenHeight

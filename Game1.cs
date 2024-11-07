@@ -32,7 +32,10 @@ namespace monogame
         protected override void Initialize()
         {
             IsMouseVisible = true;
-
+            Window.Title = "Flappy Box";
+            //this.IsFixedTimeStep = true;
+            //this.TargetElapsedTime = TimeSpan.FromSeconds(1 / 120.0);    // Update() is called every 30 times each second / 30 FPS
+            //this.IsFixedTimeStep = false;
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;

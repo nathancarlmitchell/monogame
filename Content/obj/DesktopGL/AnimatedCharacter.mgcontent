@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>c:/Users/Nathan/monogame/Content/Controls/Button.png</SourceFile>
-  <SourceTime>2024-11-05T10:14:30.0946327-05:00</SourceTime>
-  <DestFile>c:/Users/Nathan/monogame/Content/bin/DesktopGL/Controls/Button.xnb</DestFile>
-  <DestTime>2024-11-07T12:36:31.5961649-05:00</DestTime>
+  <SourceFile>c:/Users/Nathan/monogame/Content/AnimatedCharacter.png</SourceFile>
+  <SourceTime>2024-11-05T10:14:29.8998962-05:00</SourceTime>
+  <DestFile>c:/Users/Nathan/monogame/Content/bin/DesktopGL/AnimatedCharacter.xnb</DestFile>
+  <DestTime>2024-11-07T12:36:31.4154504-05:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2024-08-16T13:05:56-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

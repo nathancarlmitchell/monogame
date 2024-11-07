@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using monogame.Controls;
 
 namespace monogame.States
@@ -11,15 +12,19 @@ namespace monogame.States
     {
         private List<Button> _components;
         private Menu _menu;
-        private int currentScore;
+        private int _currentScore;
+        private int _currentCoins;
         public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
         : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = true;
-            currentScore = GameState.Score;
+
+            _currentScore = GameState.Score;
+            _currentCoins = GameState.Coins;
 
             Game1._gameState = null;
             GameState.Score = 0;
+            GameState.Coins = 0;
 
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("HudFont");
@@ -47,7 +52,10 @@ namespace monogame.States
 
             _menu.Draw(gameTime, spriteBatch);
 
-            spriteBatch.DrawString(GameState.hudFont, "Game Over: " + currentScore, new Vector2(CenterWidth, CenterHeight/2),
+            spriteBatch.DrawString(GameState.hudFont, "Game Over: " + _currentScore, new Vector2(ControlWidthCenter, CenterHeight/2),
+                Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+
+            spriteBatch.DrawString(GameState.hudFont, "Coins: " + _currentCoins, new Vector2(ControlWidthCenter, CenterHeight/4),
                 Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
             spriteBatch.End();
@@ -69,6 +77,12 @@ namespace monogame.States
             foreach (var component in _components)
             {
                 component.Update(gameTime);
+            }
+
+            // Check player input.
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
         }
     }

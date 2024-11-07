@@ -10,10 +10,15 @@ namespace monogame.States
     {
         public static SpriteFont hudFont;
         private Texture2D wallTexture, backgroundTexture;
+        private float alpha = 0.0f;
         private Player player;
-        private List<Object> enemyArray;
+        private Coin coinHUD;
+        private List<Object> wallArray;
+        private List<Coin> coinArray;
         private WallSpawner spawner;
+        private CoinSpawner coinSpawner;
         public static int Score { get; set; }
+        public static int Coins { get; set; }
 
         public GameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
@@ -26,8 +31,15 @@ namespace monogame.States
             wallTexture = new Texture2D(_graphicsDevice, 1, 1);
             wallTexture.SetData(new[] { Color.White });
 
-            enemyArray = new List<Object>();
+            wallArray = new List<Object>();
+            coinArray = new List<Coin>();
+
             spawner = new WallSpawner();
+            coinSpawner = new CoinSpawner();
+
+            coinHUD = new Coin(_content);
+            coinHUD.X = 32;
+            coinHUD.Y = 32;
 
             player = new Player(_content);
             player.X = ScreenWidth / 2;
@@ -40,17 +52,28 @@ namespace monogame.States
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
-            
-            // Replacing the normal SpriteBatch.Draw call to use the version from the "AnimatedTexture" class instead
+            // Draw background.
+            spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White * alpha);
+
+            // Draw player.
             player.currentTexture.DrawFrame(spriteBatch, new Vector2(player.X, player.Y));
 
-            spriteBatch.DrawString(hudFont, "" + Score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
-
-            for (int i = 0; i < enemyArray.Count; i++)
+            // Draw coins.
+            for (int i = 0; i < coinArray.Count; i++)
             {
-                spriteBatch.Draw(wallTexture, new Rectangle(enemyArray[i].X, enemyArray[i].Y, enemyArray[i].Width, enemyArray[i].Height), null, Color.ForestGreen);
+                coinArray[i].coinTexture.DrawFrame(spriteBatch, new Vector2(coinArray[i].X, coinArray[i].Y));
             }
+
+            // Draw walls.
+            for (int i = 0; i < wallArray.Count; i++)
+            {
+                spriteBatch.Draw(wallTexture, new Rectangle(wallArray[i].X, wallArray[i].Y, wallArray[i].Width, wallArray[i].Height), null, Color.ForestGreen);
+            }
+
+            // Draw HUD.
+            //spriteBatch.DrawString(hudFont, "" + Score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            spriteBatch.DrawString(hudFont, " x " + Coins, new Vector2(coinHUD.X + 16, coinHUD.Y - 8), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(coinHUD.X, coinHUD.Y));
 
             spriteBatch.End();
         }
@@ -64,39 +87,71 @@ namespace monogame.States
         {
             Score += 1;
 
-            // TODO: Add your update logic here
+            if (alpha < 1.0f)
+            {
+                alpha += 0.005f;
+            }
+
+            // Update player animation.
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             player.currentTexture.UpdateFrame(elapsed);
 
-            for (int i = 0; i < enemyArray.Count; i++)
+            // Update coin positions.
+            coinHUD.coinTexture.UpdateFrame(elapsed);
+            for (int i = 0; i < coinArray.Count; i++)
             {
-                enemyArray[i].X -= 2;
-                if (player.CheckForCollisions(enemyArray[i]))
+                coinArray[i].coinTexture.UpdateFrame(elapsed);
+                coinArray[i].X -= 1;
+                coinArray[i].Hover();
+                // Get coin.
+                if (player.CheckForCollisions(coinArray[i]))
+                {
+                    coinArray.RemoveAt(i);
+                    Coins += 1;
+                }
+            }
+
+            // Update wall positions.
+            for (int i = 0; i < wallArray.Count; i++)
+            {
+                wallArray[i].X -= 2;
+                if (player.CheckForCollisions(wallArray[i]))
                 {
                     _game.ChangeState(new GameOverState(_game, _graphicsDevice, _content));
                 }
             }
 
+            // Spawn an enemy.
             if ((int)gameTime.TotalGameTime.TotalMilliseconds % (3000) == 0)
             {
-                enemyArray.AddRange(spawner.Spawn(ScreenWidth, ScreenHeight));
+                wallArray.AddRange(spawner.Spawn(ScreenWidth, ScreenHeight));
             }
 
-            MouseState state = Mouse.GetState();
-            //player.Y = state.Y;
-            //player.X = state.X;
+            // Spawn a coin.
+            if ((int)gameTime.TotalGameTime.TotalMilliseconds % (6000) == 0)
+            {
+                coinArray.Add(coinSpawner.Spawn(_content));
+            }
 
+            // Update player velocity.
             player.Y -= player.Velocity / 2;
             if ((int)gameTime.TotalGameTime.TotalMilliseconds % (2) == 0)
             {
                 player.ChangeVelocity(-1);
             }
 
+            // Check player input.
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 player.Jump();
             }
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                _game.ChangeState(new PauseState(_game, _graphicsDevice, _content));
+            }
+
+            // Check player bounds
             if (player.X > ScreenWidth - player.Width / 2)
             {
                 player.X = ScreenWidth - player.Width / 2;
@@ -113,11 +168,6 @@ namespace monogame.States
             else if (player.Y < player.Height / 2)
             {
                 player.Y = player.Height / 2;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                _game.ChangeState(new PauseState(_game, _graphicsDevice, _content));
             }
         }
     }

@@ -23,7 +23,6 @@ namespace monogame
             int maxHeight = ScreenHeight - gap;
             int height = (int)Math.Floor(rand.NextDouble() * (maxHeight - minHeight + 1) + minHeight);
             
-
             obj1.X = ScreenWidth;
             obj1.Y = 0;
             obj1.Width = width;

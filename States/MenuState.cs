@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using monogame.Controls;
 
 namespace monogame.States
@@ -85,6 +86,12 @@ namespace monogame.States
             foreach (var component in _components)
             {
                 component.Update(gameTime);
+            }
+
+            // Check player input.
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
         }
 

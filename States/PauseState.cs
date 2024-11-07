@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using monogame.Controls;
 
 namespace monogame.States
@@ -48,7 +49,7 @@ namespace monogame.States
         {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(GameState.hudFont, "Paused: " + GameState.Score, new Vector2(CenterWidth, CenterHeight/2),
+            spriteBatch.DrawString(GameState.hudFont, "Paused: " + GameState.Score, new Vector2(ControlWidthCenter, CenterHeight/2),
                 Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
             _menu.Draw(gameTime, spriteBatch);
@@ -76,6 +77,12 @@ namespace monogame.States
             foreach (var component in _components)
             {
                 component.Update(gameTime);
+            }
+
+            // Check player input.
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
         }
     }

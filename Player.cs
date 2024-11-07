@@ -11,6 +11,7 @@ namespace monogame
         protected ContentManager _content;
         private AnimatedTexture playerIdleTexture, playerJumpTexture;
         public AnimatedTexture currentTexture;
+
         // The rotation of the character on screen
         private const float rotation = 0;
         // The scale of the character, how big it is drawn
@@ -21,9 +22,11 @@ namespace monogame
         private const int frames = 2;
         // How many frames should be drawn each second, how fast does the animation run?
         private const int framesPerSec = 4;
-        public int Velocity { get; set; }
-        private const int jumpVelocity = 12;
+
+        private const int jumpVelocity = 14;
         private const int maxVelocity = 64;
+
+        public int Velocity { get; set; }
 
         public Player(ContentManager content)
         {
