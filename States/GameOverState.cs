@@ -80,7 +80,7 @@ namespace monogame.States
             }
 
             // Check player input.
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
                 _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }

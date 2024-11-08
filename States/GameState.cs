@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -10,13 +11,14 @@ namespace monogame.States
     {
         public static SpriteFont hudFont;
         private Texture2D wallTexture, backgroundTexture;
-        private float alpha = 0.0f;
+        private double alpha = 0.0;
         private Player player;
         private Coin coinHUD;
-        private List<Object> wallArray;
+        private List<Wall> wallArray;
         private List<Coin> coinArray;
-        private WallSpawner spawner;
+        private WallSpawner wallSpawner;
         private CoinSpawner coinSpawner;
+        
         public static int Score { get; set; }
         public static int Coins { get; set; }
 
@@ -31,10 +33,10 @@ namespace monogame.States
             wallTexture = new Texture2D(_graphicsDevice, 1, 1);
             wallTexture.SetData(new[] { Color.White });
 
-            wallArray = new List<Object>();
+            wallArray = new List<Wall>();
             coinArray = new List<Coin>();
 
-            spawner = new WallSpawner();
+            wallSpawner = new WallSpawner();
             coinSpawner = new CoinSpawner();
 
             coinHUD = new Coin(_content);
@@ -53,7 +55,7 @@ namespace monogame.States
             spriteBatch.Begin();
 
             // Draw background.
-            spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White * alpha);
+            spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White * (float)alpha);
 
             // Draw player.
             player.currentTexture.DrawFrame(spriteBatch, new Vector2(player.X, player.Y));
@@ -65,10 +67,10 @@ namespace monogame.States
             }
 
             // Draw walls.
-            for (int i = 0; i < wallArray.Count; i++)
-            {
-                spriteBatch.Draw(wallTexture, new Rectangle(wallArray[i].X, wallArray[i].Y, wallArray[i].Width, wallArray[i].Height), null, Color.ForestGreen);
-            }
+            //for (int i = 0; i < wallArray.Count; i++)
+            //{
+                //spriteBatch.Draw(wallTexture, new Rectangle(wallArray[i].X, wallArray[i].Y, wallArray[i].Width, wallArray[i].Height), null, Color.ForestGreen);
+            //}
 
             // Draw HUD.
             //spriteBatch.DrawString(hudFont, "" + Score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
@@ -76,6 +78,12 @@ namespace monogame.States
             coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(coinHUD.X, coinHUD.Y));
 
             spriteBatch.End();
+
+            // Draw walls.
+            for (int i = 0; i < wallArray.Count; i++)
+            {
+                wallArray[i].Draw(spriteBatch);
+            }
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -83,20 +91,35 @@ namespace monogame.States
 
         }
 
+        // private float duration = 1;
+        // private float start = 0;
+        // private float end = (float)(Math.PI * 2);
+
         public override void Update(GameTime gameTime)
         {
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float currentTime = (float)gameTime.TotalGameTime.TotalSeconds;
+
             Score += 1;
 
-            if (alpha < 1.0f)
+            if (alpha < 1.0)
             {
-                alpha += 0.005f;
+                alpha += 0.005;
+                if (alpha > 1.0)
+                {
+                    alpha = 1.0;
+                }
             }
 
-            // Update player animation.
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            player.currentTexture.UpdateFrame(elapsed);
+            // var t = currentTime / duration;
+            // t = EasingFunctions.InSine(t);
+            // var val = start + t * (end - start);
+            // player.currentTexture.Rotation = val;
 
-            // Update coin positions.
+            // Rotate player.
+            //player.currentTexture.Rotation = (float)(alpha * Math.PI * 2) * 4;
+
+            // Update coin positions and check collisions.
             coinHUD.coinTexture.UpdateFrame(elapsed);
             for (int i = 0; i < coinArray.Count; i++)
             {
@@ -111,7 +134,7 @@ namespace monogame.States
                 }
             }
 
-            // Update wall positions.
+            // Update wall positions and check collisions.
             for (int i = 0; i < wallArray.Count; i++)
             {
                 wallArray[i].X -= 2;
@@ -121,10 +144,13 @@ namespace monogame.States
                 }
             }
 
-            // Spawn an enemy.
+            // Update player animation.
+            player.currentTexture.UpdateFrame(elapsed);
+
+            // Spawn a wall.
             if ((int)gameTime.TotalGameTime.TotalMilliseconds % (3000) == 0)
             {
-                wallArray.AddRange(spawner.Spawn(ScreenWidth, ScreenHeight));
+                wallArray.AddRange(wallSpawner.Spawn(_content));
             }
 
             // Spawn a coin.
@@ -143,7 +169,11 @@ namespace monogame.States
             // Check player input.
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                player.Jump();
+                player.Jump(player.JumpVelocity);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+            {
+                player.Jump(player.JumpVelocity * 2);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))

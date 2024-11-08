@@ -23,10 +23,9 @@ namespace monogame
         // How many frames should be drawn each second, how fast does the animation run?
         private const int framesPerSec = 4;
 
-        private const int jumpVelocity = 14;
         private const int maxVelocity = 64;
-
-        public int Velocity { get; set; }
+        public int JumpVelocity { get; } = 14;
+        public int Velocity { get; set; } = 14;
 
         public Player(ContentManager content)
         {
@@ -34,7 +33,6 @@ namespace monogame
 
             this.Height = 64;
             this.Width = 64;
-            this.Velocity = 12;
 
             playerIdleTexture = new AnimatedTexture(new Vector2(this.Height / 2, this.Width / 2), rotation, scale, depth);
             playerIdleTexture.Load(_content, "anim_idle", frames, framesPerSec);
@@ -61,7 +59,7 @@ namespace monogame
             Bounce();
         }
 
-        public void Jump()
+        public void Jump(int _jumpVelocity)
         {
             if (this.Velocity > -2)
             {
@@ -72,8 +70,22 @@ namespace monogame
                 }
                 return;
             }
-            this.Velocity = jumpVelocity;
+            this.Velocity = _jumpVelocity;
         }
+
+        // public void Boost()
+        // {
+        //     if (this.Velocity > -2)
+        //     {
+        //         if (currentTexture != playerJumpTexture)
+        //         {
+        //             currentTexture = playerJumpTexture;
+        //             //currentTexture.Reset();
+        //         }
+        //         return;
+        //     }
+        //     this.Velocity = boostVelocity;
+        // }
 
         public void Bounce()
         {
