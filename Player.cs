@@ -73,19 +73,6 @@ namespace monogame
             this.Velocity = _jumpVelocity;
         }
 
-        // public void Boost()
-        // {
-        //     if (this.Velocity > -2)
-        //     {
-        //         if (currentTexture != playerJumpTexture)
-        //         {
-        //             currentTexture = playerJumpTexture;
-        //             //currentTexture.Reset();
-        //         }
-        //         return;
-        //     }
-        //     this.Velocity = boostVelocity;
-        // }
 
         public void Bounce()
         {

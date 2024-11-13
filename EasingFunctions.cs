@@ -9,6 +9,17 @@ namespace monogame
     // A few equations, very simplified:	https://gist.github.com/gre/1650294
     // Easings.net equations, simplified:	https://github.com/ai/easings.net/blob/master/src/easings/easingsFunctions.ts
 
+    // Example:
+    // private float duration = 1;
+    // private float start = 0;
+    // private float end = (float)(Math.PI * 2);
+    //
+    // float currentTime = (float)gameTime.TotalGameTime.TotalSeconds;
+    // var t = currentTime / duration;
+    // t = EasingFunctions.InSine(t);
+    // var val = start + t * (end - start);
+    // player.currentTexture.Rotation = val;
+
     public static class EasingFunctions
     {
         public static float Linear(float t) => t;

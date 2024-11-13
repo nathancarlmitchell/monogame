@@ -68,3 +68,4 @@ C:\Users\Owner\monogame-main\obj\Debug\net8.0\monogame.genruntimeconfig.cache
 C:\Users\Owner\monogame-main\obj\Debug\net8.0\ref\monogame.dll
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\coin.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\wall.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\bird.xnb

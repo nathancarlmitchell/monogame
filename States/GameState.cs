@@ -14,11 +14,12 @@ namespace monogame.States
         private double alpha = 0.0;
         private Player player;
         private Coin coinHUD;
+        private Bird bird;
         private List<Wall> wallArray;
         private List<Coin> coinArray;
         private WallSpawner wallSpawner;
         private CoinSpawner coinSpawner;
-        
+
         public static int Score { get; set; }
         public static int Coins { get; set; }
 
@@ -48,6 +49,9 @@ namespace monogame.States
             player.Y = ScreenHeight / 2;
             player.Height = 64;
             player.Width = 64;
+
+            bird = new Bird(_content);
+            bird.Reset();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -56,6 +60,9 @@ namespace monogame.States
 
             // Draw background.
             spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White * (float)alpha);
+
+            // Draw bird.
+            bird.currentTexture.DrawFrame(spriteBatch, new Vector2(bird.X, bird.Y), (float)0.75);
 
             // Draw player.
             player.currentTexture.DrawFrame(spriteBatch, new Vector2(player.X, player.Y));
@@ -72,11 +79,6 @@ namespace monogame.States
                 //spriteBatch.Draw(wallTexture, new Rectangle(wallArray[i].X, wallArray[i].Y, wallArray[i].Width, wallArray[i].Height), null, Color.ForestGreen);
             //}
 
-            // Draw HUD.
-            //spriteBatch.DrawString(hudFont, "" + Score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
-            spriteBatch.DrawString(hudFont, " x " + Coins, new Vector2(coinHUD.X + 16, coinHUD.Y - 8), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
-            coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(coinHUD.X, coinHUD.Y));
-
             spriteBatch.End();
 
             // Draw walls.
@@ -84,16 +86,23 @@ namespace monogame.States
             {
                 wallArray[i].Draw(spriteBatch);
             }
+
+
+            spriteBatch.Begin();
+
+            // Draw HUD.
+            //spriteBatch.DrawString(hudFont, "" + Score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            spriteBatch.DrawString(hudFont, " x " + Coins, new Vector2(coinHUD.X + 16, coinHUD.Y - 8), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(coinHUD.X, coinHUD.Y));
+
+            spriteBatch.End(); 
+
         }
 
         public override void PostUpdate(GameTime gameTime)
         {
 
         }
-
-        // private float duration = 1;
-        // private float start = 0;
-        // private float end = (float)(Math.PI * 2);
 
         public override void Update(GameTime gameTime)
         {
@@ -110,11 +119,6 @@ namespace monogame.States
                     alpha = 1.0;
                 }
             }
-
-            // var t = currentTime / duration;
-            // t = EasingFunctions.InSine(t);
-            // var val = start + t * (end - start);
-            // player.currentTexture.Rotation = val;
 
             // Rotate player.
             //player.currentTexture.Rotation = (float)(alpha * Math.PI * 2) * 4;
@@ -137,7 +141,7 @@ namespace monogame.States
             // Update wall positions and check collisions.
             for (int i = 0; i < wallArray.Count; i++)
             {
-                wallArray[i].X -= 2;
+                wallArray[i].Move();
                 if (player.CheckForCollisions(wallArray[i]))
                 {
                     _game.ChangeState(new GameOverState(_game, _graphicsDevice, _content));
@@ -146,6 +150,14 @@ namespace monogame.States
 
             // Update player animation.
             player.currentTexture.UpdateFrame(elapsed);
+
+            // Update bird animation.
+            if (bird.X < 0)
+            {
+                bird.Reset();
+            }
+            bird.currentTexture.UpdateFrame(elapsed);
+            bird.X -= 1;
 
             // Spawn a wall.
             if ((int)gameTime.TotalGameTime.TotalMilliseconds % (3000) == 0)

@@ -32,6 +32,11 @@ namespace monogame
             targetRectangle = new Rectangle(0, 0, wallTexture.Width * tileCountWidth, wallTexture.Height * TileCountHeight);
         }
 
+        public void Move()
+        {
+            this.X -= 2;
+        }
+
         public void Update()
         {
             // Define a drawing rectangle based on the number of tiles wide and high, using the texture dimensions.
