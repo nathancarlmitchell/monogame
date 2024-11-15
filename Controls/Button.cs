@@ -8,10 +8,9 @@ namespace monogame.Controls
     public class Button
     {
         #region Fields
-        private MouseState _currentMouse;
+        private MouseState _currentMouse, _previousMouse;
         private SpriteFont _font;
         private bool _isHovering;
-        private MouseState _previousMouse;
         private Texture2D _texture;
 
         #endregion
@@ -19,7 +18,7 @@ namespace monogame.Controls
         #region Properties
         public event EventHandler Click;
         public bool Clicked { get; private set; }
-        public Color PenColour { get; set; }
+        public Color PenColor { get; set; }
         public Vector2 Position { get; set; }
         public Rectangle Rectangle
         {
@@ -39,26 +38,26 @@ namespace monogame.Controls
         {
             _texture = texture;
             _font = font;
-            PenColour = Color.Black;
+            PenColor = Color.Black;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            var colour = Color.White;
+            var color = Color.White;
 
             if (_isHovering)
             {
-                colour = Color.Gray;
+                color = Color.Gray;
             }
 
-            spriteBatch.Draw(_texture, Rectangle, colour);
+            spriteBatch.Draw(_texture, Rectangle, color);
 
             if (!string.IsNullOrEmpty(Text))
             {
                 var x = (Rectangle.X + (Rectangle.Width / 2)) - (_font.MeasureString(Text).X / 2);
                 var y = (Rectangle.Y + (Rectangle.Height / 2)) - (_font.MeasureString(Text).Y / 2);
 
-                spriteBatch.DrawString(_font, Text, new Vector2(x, y), PenColour);
+                spriteBatch.DrawString(_font, Text, new Vector2(x, y), PenColor);
             }
         }
 

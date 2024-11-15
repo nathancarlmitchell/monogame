@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>c:/Users/Nathan/monogame/Content/ball_jump.png</SourceFile>
-  <SourceTime>2024-11-05T10:14:30.0302896-05:00</SourceTime>
-  <DestFile>c:/Users/Nathan/monogame/Content/bin/DesktopGL/ball_jump.xnb</DestFile>
-  <DestTime>2024-11-15T16:44:19.7174116-05:00</DestTime>
+  <SourceFile>c:/Users/Nathan/monogame/Content/anim_jump_default.png</SourceFile>
+  <SourceTime>2024-11-05T10:14:29.9903962-05:00</SourceTime>
+  <DestFile>c:/Users/Nathan/monogame/Content/bin/DesktopGL/anim_jump_default.xnb</DestFile>
+  <DestTime>2024-11-15T16:44:19.7013954-05:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2024-08-16T13:05:56-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
