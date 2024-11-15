@@ -31,13 +31,13 @@ namespace monogame.States
 
             newGameButton.Click += NewGameButton_Click;
 
-            var loadGameButton = new Button(buttonTexture, buttonFont)
+            var loadSkinsButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(CenterWidth, 250),
-                Text = "Load Game",
+                Text = "Skins",
             };
 
-            loadGameButton.Click += LoadGameButton_Click;
+            loadSkinsButton.Click += loadSkinsButton_Click;
 
             var quitGameButton = new Button(buttonTexture, buttonFont)
             {
@@ -50,7 +50,7 @@ namespace monogame.States
             _components = new List<Button>()
             {
                 newGameButton,
-                loadGameButton,
+                loadSkinsButton,
                 quitGameButton,
             };
 
@@ -66,9 +66,9 @@ namespace monogame.States
             spriteBatch.End();
         }
 
-        private void LoadGameButton_Click(object sender, EventArgs e)
+        private void loadSkinsButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Load Game");
+            _game.ChangeState(new SkinsState(_game, _graphicsDevice, _content));
         }
 
         private void NewGameButton_Click(object sender, EventArgs e)

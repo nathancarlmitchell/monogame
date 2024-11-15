@@ -16,7 +16,7 @@ namespace monogame
         private int _screenWidth = GameState.ScreenWidth;
         private int minHeight = 20;
         private int width = 64;
-        private int minGap = 160;
+        private int minGap = 164;
         private int maxGap = 200;
         private List<Wall> wallList;
         private Wall wall1, wall2;

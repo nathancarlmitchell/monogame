@@ -63,6 +63,7 @@ namespace monogame.States
 
         private void NewGameButton_Click(object sender, EventArgs e)
         {
+            Game1._gameState = null;
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }
 

@@ -20,12 +20,12 @@ namespace monogame
         private const float depth = 0.5f;
         // How many frames/images are included in the animation
         private const int frames = 2;
-        // How many frames should be drawn each second, how fast does the animation run?
         private const int framesPerSec = 4;
 
         private const int maxVelocity = 64;
         public int JumpVelocity { get; } = 14;
         public int Velocity { get; set; } = 14;
+        public String CurrentSkin { get; set; }
 
         public Player(ContentManager content)
         {
@@ -35,10 +35,10 @@ namespace monogame
             this.Width = 64;
 
             playerIdleTexture = new AnimatedTexture(new Vector2(this.Height / 2, this.Width / 2), rotation, scale, depth);
-            playerIdleTexture.Load(_content, "anim_idle", frames, framesPerSec);
+            playerIdleTexture.Load(_content, "anim_idle_default", frames, framesPerSec);
 
             playerJumpTexture = new AnimatedTexture(new Vector2(this.Height / 2, this.Width / 2), rotation, scale, depth);
-            playerJumpTexture.Load(_content, "anim_jump", frames, framesPerSec);
+            playerJumpTexture.Load(_content, "anim_jump_default", frames, framesPerSec);
 
             currentTexture = playerIdleTexture;
         }
@@ -86,5 +86,27 @@ namespace monogame
                 this.Velocity = Math.Abs(this.Velocity) / 2;
             }
         }
+
+        public void ChangeSkin(string skin)
+        {
+            switch (skin)
+            {
+                case "anim_idle_pink":
+                    playerIdleTexture.Load(_content, "anim_idle_pink", frames, framesPerSec);
+                    playerJumpTexture.Load(_content, "anim_jump_pink", frames, framesPerSec);
+                    break;
+                case "anim_idle_red":
+                    playerIdleTexture.Load(_content, "anim_idle_red", frames, framesPerSec);
+                    playerJumpTexture.Load(_content, "anim_jump_red", frames, framesPerSec);
+                    break;
+                case "anim_idle":
+                    playerIdleTexture.Load(_content, "anim_idle_default", frames, framesPerSec);
+                    playerJumpTexture.Load(_content, "anim_jump_default", frames, framesPerSec);
+                    break;
+            }
+
+            currentTexture = playerIdleTexture;   
+        }
+
     }
 }

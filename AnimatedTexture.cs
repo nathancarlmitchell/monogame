@@ -77,6 +77,15 @@ namespace monogame
             DrawFrame(batch, frame, screenPos, alpha);
         }
 
+        public void DrawFrame(SpriteBatch batch, Vector2 screenPos, Color color)
+        {
+            int FrameWidth = myTexture.Width / frameCount;
+            Rectangle sourcerect = new Rectangle(FrameWidth * frame, 0,
+                FrameWidth, myTexture.Height);
+            batch.Draw(myTexture, screenPos, sourcerect, color,
+                Rotation, Origin, Scale, SpriteEffects.None, Depth);
+        }
+
         public void DrawFrame(SpriteBatch batch, int frame, Vector2 screenPos)
         {
             int FrameWidth = myTexture.Width / frameCount;

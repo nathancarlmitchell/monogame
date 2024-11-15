@@ -9,16 +9,19 @@ namespace monogame.States
 {
     public class GameState : State
     {
-        public static SpriteFont hudFont;
+        public static SpriteFont hudFont, debugFont;
         private Texture2D wallTexture, backgroundTexture;
+        private Object bgObject;
         private double alpha = 0.0;
-        private Player player;
+        public static Player player;
+        private List<Skin> skins;
         private Coin coinHUD;
         private Bird bird;
         private List<Wall> wallArray;
         private List<Coin> coinArray;
         private WallSpawner wallSpawner;
         private CoinSpawner coinSpawner;
+        private bool Debug = true;
 
         public static int Score { get; set; }
         public static int Coins { get; set; }
@@ -29,7 +32,13 @@ namespace monogame.States
             _game.IsMouseVisible = false;
 
             hudFont = _content.Load<SpriteFont>("HudFont");
+            debugFont = _content.Load<SpriteFont>("DebugFont");
+
             backgroundTexture = _content.Load<Texture2D>("bg");
+            bgObject = new Object();
+            bgObject.X = 0;
+            bgObject.Y = 0;
+
 
             wallTexture = new Texture2D(_graphicsDevice, 1, 1);
             wallTexture.SetData(new[] { Color.White });
@@ -50,6 +59,16 @@ namespace monogame.States
             player.Height = 64;
             player.Width = 64;
 
+            skins = SkinsState.Skins;
+            for (int i = 0; i < skins.Count; i++)
+            {
+                if (skins[i].Selected)
+                {
+                    player.ChangeSkin(skins[i].Name);
+                    player.CurrentSkin = skins[i].Name;
+                }
+            }
+
             bird = new Bird(_content);
             bird.Reset();
         }
@@ -59,7 +78,7 @@ namespace monogame.States
             spriteBatch.Begin();
 
             // Draw background.
-            spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White * (float)alpha);
+            spriteBatch.Draw(backgroundTexture, new Vector2(bgObject.X, bgObject.Y), Color.White * (float)alpha);
 
             // Draw bird.
             bird.currentTexture.DrawFrame(spriteBatch, new Vector2(bird.X, bird.Y), (float)0.75);
@@ -94,6 +113,15 @@ namespace monogame.States
             //spriteBatch.DrawString(hudFont, "" + Score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             spriteBatch.DrawString(hudFont, " x " + Coins, new Vector2(coinHUD.X + 16, coinHUD.Y - 8), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(coinHUD.X, coinHUD.Y));
+
+            if (Debug)
+            {
+                float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                spriteBatch.DrawString(debugFont, "elapsed: " + elapsed, new Vector2(64, ScreenHeight - 64), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+
+                float currentTime = (float)gameTime.TotalGameTime.TotalSeconds;
+                spriteBatch.DrawString(debugFont, "currentTime: " + currentTime, new Vector2(64, ScreenHeight - 48), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            }
 
             spriteBatch.End(); 
 
@@ -163,6 +191,7 @@ namespace monogame.States
             if ((int)gameTime.TotalGameTime.TotalMilliseconds % (3000) == 0)
             {
                 wallArray.AddRange(wallSpawner.Spawn(_content));
+                bgObject.X -= 1;
             }
 
             // Spawn a coin.
@@ -192,6 +221,11 @@ namespace monogame.States
             {
                 _game.ChangeState(new PauseState(_game, _graphicsDevice, _content));
             }
+
+            // if (Keyboard.GetState().IsKeyDown(Keys.L))
+            // {
+            //     player.ChangeSkin();
+            // }
 
             // Check player bounds
             if (player.X > ScreenWidth - player.Width / 2)

@@ -28,6 +28,14 @@ namespace monogame.States
 
             continueGameButton.Click += ContinueGameButton_Click;
 
+            var mainMenuButton = new Button(buttonTexture, buttonFont)
+            {
+                Position = new Vector2(CenterWidth, 250),
+                Text = "Main Menu",
+            };
+
+            mainMenuButton.Click += MainMenuButton_Click;
+
             var quitGameButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(CenterWidth, 300),
@@ -39,6 +47,7 @@ namespace monogame.States
             _components = new List<Button>()
             {
                 continueGameButton,
+                mainMenuButton,
                 quitGameButton,
             };
 
@@ -60,6 +69,12 @@ namespace monogame.States
         private void ContinueGameButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+        }
+
+        private void MainMenuButton_Click(object sender, EventArgs e)
+        {
+            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
+            Game1._gameState = null;
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)
