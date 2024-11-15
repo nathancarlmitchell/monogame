@@ -29,8 +29,6 @@ C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\HudFont.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\Controls\Button.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\ball_jump.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\AnimatedCharacter.xnb
-C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\anim_jump.xnb
-C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\anim_idle.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\bg.xnb
 C:\Users\Owner\monogame-main\bin\Debug\net8.0\Content\AnimatedCharacter.xnb
 C:\Users\Owner\monogame-main\bin\Debug\net8.0\Content\anim_idle.xnb
@@ -69,3 +67,10 @@ C:\Users\Owner\monogame-main\obj\Debug\net8.0\ref\monogame.dll
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\coin.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\wall.xnb
 C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\bird.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\anim_idle_red.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\anim_jump_red.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\DebugFont.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\anim_idle_pink.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\anim_jump_pink.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\anim_idle_default.xnb
+C:\Users\Nathan\monogame\bin\Debug\net8.0\Content\anim_jump_default.xnb
