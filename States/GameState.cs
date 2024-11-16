@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Text.Json;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -21,15 +23,31 @@ namespace monogame.States
         private List<Coin> coinArray;
         private WallSpawner wallSpawner;
         private CoinSpawner coinSpawner;
-        private bool Debug = true;
+        private bool _debug = true;
 
         public static int Score { get; set; }
         public static int Coins { get; set; }
+
+        private Load data;
 
         public GameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = false;
+
+            using (StreamReader r = new StreamReader("data.json"))
+            {
+                string json = r.ReadToEnd();
+                Console.WriteLine(json);
+                data = JsonSerializer.Deserialize<Load>(json);
+                Console.WriteLine(data);
+            }
+
+            if (data.highScore > Score)
+            {
+                Coins = data.highScore;
+            }
+            
 
             hudFont = _content.Load<SpriteFont>("HudFont");
             debugFont = _content.Load<SpriteFont>("DebugFont");
@@ -60,12 +78,15 @@ namespace monogame.States
             player.Width = 64;
 
             skins = SkinsState.Skins;
-            for (int i = 0; i < skins.Count; i++)
+            if (skins is not null)
             {
-                if (skins[i].Selected)
+                for (int i = 0; i < skins.Count; i++)
                 {
-                    player.ChangeSkin(skins[i].Name);
-                    player.CurrentSkin = skins[i].Name;
+                    if (skins[i].Selected)
+                    {
+                        player.ChangeSkin(skins[i].Name);
+                        player.CurrentSkin = skins[i].Name;
+                    }
                 }
             }
 
@@ -95,7 +116,7 @@ namespace monogame.States
             // Draw walls.
             //for (int i = 0; i < wallArray.Count; i++)
             //{
-                //spriteBatch.Draw(wallTexture, new Rectangle(wallArray[i].X, wallArray[i].Y, wallArray[i].Width, wallArray[i].Height), null, Color.ForestGreen);
+            //spriteBatch.Draw(wallTexture, new Rectangle(wallArray[i].X, wallArray[i].Y, wallArray[i].Width, wallArray[i].Height), null, Color.ForestGreen);
             //}
 
             spriteBatch.End();
@@ -114,7 +135,7 @@ namespace monogame.States
             spriteBatch.DrawString(hudFont, " x " + Coins, new Vector2(coinHUD.X + 16, coinHUD.Y - 8), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(coinHUD.X, coinHUD.Y));
 
-            if (Debug)
+            if (_debug)
             {
                 float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 spriteBatch.DrawString(debugFont, "elapsed: " + elapsed, new Vector2(64, ScreenHeight - 64), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
@@ -123,7 +144,7 @@ namespace monogame.States
                 spriteBatch.DrawString(debugFont, "currentTime: " + currentTime, new Vector2(64, ScreenHeight - 48), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             }
 
-            spriteBatch.End(); 
+            spriteBatch.End();
 
         }
 

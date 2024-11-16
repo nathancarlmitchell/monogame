@@ -42,7 +42,7 @@ namespace monogame.States
             var quitGameButton = new Button(buttonTexture, buttonFont)
             {
                 Position = new Vector2(CenterWidth, 300),
-                Text = "Quit Game",
+                Text = "Quit",
             };
 
             quitGameButton.Click += QuitGameButton_Click;

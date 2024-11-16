@@ -12,6 +12,7 @@ namespace monogame.States
     {
         private List<Button> _components;
         private Menu _menu;
+        private Texture2D borderTexture;
         private int _currentScore;
         private int _currentCoins;
         public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
@@ -27,6 +28,7 @@ namespace monogame.States
             GameState.Coins = 0;
 
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
+            borderTexture = _content.Load<Texture2D>("border");
             var buttonFont = _content.Load<SpriteFont>("HudFont");
 
             var newGameButton = new Button(buttonTexture, buttonFont)
@@ -49,6 +51,8 @@ namespace monogame.States
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
+
+            spriteBatch.Draw(borderTexture, new Rectangle(0, 0, borderTexture.Height, borderTexture.Width), null, Color.White);
 
             _menu.Draw(gameTime, spriteBatch);
 

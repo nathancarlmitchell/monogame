@@ -12,6 +12,7 @@ namespace monogame.States
     {
         private List<Button> _components;
         private Menu _menu;
+        private AnimatedTexture arrowSprite;
         public static List<Skin> Skins { get; set; }
         private int _difference;
         private int _totalComponents;
@@ -22,6 +23,9 @@ namespace monogame.States
         : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = true;
+
+            arrowSprite = new AnimatedTexture(new Vector2(0,0), 0, 1f, 0.5f);
+            arrowSprite.Load(_content, "arrow", 4, 4);
 
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("HudFont");
@@ -85,9 +89,12 @@ namespace monogame.States
             for (int i = 0; i < Skins.Count; i++)
             {
                 int centerComponent = _totalComponents / 2;
-                _difference = i - centerComponent;      
+                _difference = i - centerComponent;
+                int _x = MenuState.CenterWidth + _difference * 100 - (64 / _totalComponents);
+                int _y = _centerHeight - 128 - 16;
                 if (Skins[i].Selected)
                 {
+                    arrowSprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 64));
                     Skins[i].Position = new Vector2(MenuState.CenterWidth + _difference * 100 - (64 / _totalComponents), _centerHeight - 128 - 16);
                 }
                 else
@@ -129,6 +136,8 @@ namespace monogame.States
 
         public override void Update(GameTime gameTime)
         {
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             foreach (var component in _components)
             {
                 component.Update(gameTime);
@@ -138,6 +147,8 @@ namespace monogame.States
             {
                 skin.Update(gameTime);
             }
+
+            arrowSprite.UpdateFrame(elapsed);
         }
     }
 }
