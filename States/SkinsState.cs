@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -47,22 +49,30 @@ namespace monogame.States
 
 
             // Create skins list
-            Skin skin1 = new Skin(content, "anim_idle_default");
-            Skin skin2 = new Skin(content, "anim_idle_red");
-            Skin skin3 = new Skin(content, "anim_idle_pink");
+            // Skin skin1 = new Skin(content, "anim_idle_default");
+            // Skin skin2 = new Skin(content, "anim_idle_red");
+            // Skin skin3 = new Skin(content, "anim_idle_pink");
+            // Skin skin4 = new Skin(content, "anim_idle_locked");
 
-            String currrentSkin = null;
-            if (GameState.player is not null)
-            {
-                currrentSkin = GameState.player.CurrentSkin;
-            }
+            // String currrentSkin = null;
+            // if (GameState.player is not null)
+            // {
+            //     currrentSkin = GameState.player.CurrentSkin;
+            // } 
+            // else
+            // {
+            //     skin1.Selected = true;
+            // }
 
-            Skins = new List<Skin>()
-            {
-                skin1,
-                skin2,
-                skin3
-            };
+            // Skins = new List<Skin>()
+            // {
+            //     skin1,
+            //     skin2,
+            //     skin3,
+            //     skin4
+            // };
+
+            Util.LoadSkinData(content);
 
             _centerHeight = MenuState.CenterHeight;
             _centerWidth = MenuState.ControlWidthCenter;
@@ -74,13 +84,12 @@ namespace monogame.States
                 int centerComponent = _totalComponents / 2;
                 _difference = i - centerComponent;                
 
-                if (currrentSkin is not null && Skins[i].Name == currrentSkin)
-                {
-                    Skins[i].Selected = true;
-                }
+                // if (currrentSkin is not null && Skins[i].Name == currrentSkin)
+                // {
+                //     Skins[i].Selected = true;
+                // }
             }
         }
-
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -115,12 +124,10 @@ namespace monogame.States
 
             for (int i = 0; i < Skins.Count; i++)
             {
-                Skins[i].Selected = false;
                 Skins[i].Deactivate();
             }
-            skin.Selected = true;
-
             skin.Activate();
+            Util.SaveSkinData();
         }
 
         private void backButton_Click(object sender, EventArgs e)

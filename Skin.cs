@@ -45,16 +45,19 @@ namespace monogame
             targetRectangle = new Rectangle(0, 0, 64, 64);
         }
 
+
         public void Activate()
         {
             string _name = this.Name.Split("_").Last();
             _texture.Load(_content, "anim_jump_" + _name, frames, framesPerSec);
+            this.Selected = true;
         }
 
         public void Deactivate()
         {
             string _name = this.Name.Split("_").Last();
             _texture.Load(_content, "anim_idle_" + _name, frames, framesPerSec);
+            this.Selected = false;
         }
 
 

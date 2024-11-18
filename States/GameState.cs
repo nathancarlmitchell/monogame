@@ -16,8 +16,8 @@ namespace monogame.States
         private Object bgObject;
         private double alpha = 0.0;
         public static Player player;
-        private List<Skin> skins;
-        private Coin coinHUD;
+        public static List<Skin> Skins { get; set; }
+        public static Coin coinHUD;
         private Bird bird;
         private List<Wall> wallArray;
         private List<Coin> coinArray;
@@ -26,37 +26,28 @@ namespace monogame.States
         private bool _debug = true;
 
         public static int Score { get; set; }
+        public static int HiScore { get; set; }
         public static int Coins { get; set; }
 
-        private Load data;
+        //private Load data;
 
         public GameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = false;
 
-            using (StreamReader r = new StreamReader("data.json"))
-            {
-                string json = r.ReadToEnd();
-                Console.WriteLine(json);
-                data = JsonSerializer.Deserialize<Load>(json);
-                Console.WriteLine(data);
-            }
-
-            if (data.highScore > Score)
-            {
-                Coins = data.highScore;
-            }
-            
+            Util.LoadGameData();            
 
             hudFont = _content.Load<SpriteFont>("HudFont");
             debugFont = _content.Load<SpriteFont>("DebugFont");
 
+            // Load background objects
             backgroundTexture = _content.Load<Texture2D>("bg");
             bgObject = new Object();
             bgObject.X = 0;
             bgObject.Y = 0;
-
+            bird = new Bird(_content);
+            bird.Reset();
 
             wallTexture = new Texture2D(_graphicsDevice, 1, 1);
             wallTexture.SetData(new[] { Color.White });
@@ -77,22 +68,24 @@ namespace monogame.States
             player.Height = 64;
             player.Width = 64;
 
-            skins = SkinsState.Skins;
-            if (skins is not null)
+            // Set the selected player skin
+            Util.LoadSkinData(_content);
+            GameState.Skins = SkinsState.Skins;
+            if (GameState.Skins is not null)
             {
-                for (int i = 0; i < skins.Count; i++)
+                Console.WriteLine("Skins in not null");
+                for (int i = 0; i < GameState.Skins.Count; i++)
                 {
-                    if (skins[i].Selected)
+                    if (GameState.Skins[i].Selected)
                     {
-                        player.ChangeSkin(skins[i].Name);
-                        player.CurrentSkin = skins[i].Name;
+                        Console.WriteLine("skins[i].Name: " + GameState.Skins[i].Name);
+                        player.ChangeSkin(GameState.Skins[i].Name);
+                        player.CurrentSkin = GameState.Skins[i].Name;
                     }
                 }
             }
-
-            bird = new Bird(_content);
-            bird.Reset();
         }
+
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -131,7 +124,8 @@ namespace monogame.States
             spriteBatch.Begin();
 
             // Draw HUD.
-            //spriteBatch.DrawString(hudFont, "" + Score, Vector2.One, Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            spriteBatch.DrawString(hudFont, "Score: " + Score, new Vector2(32, 64), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            spriteBatch.DrawString(hudFont, "Hi Score: " + HiScore, new Vector2(32, 92), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             spriteBatch.DrawString(hudFont, " x " + Coins, new Vector2(coinHUD.X + 16, coinHUD.Y - 8), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(coinHUD.X, coinHUD.Y));
 
@@ -159,6 +153,10 @@ namespace monogame.States
             float currentTime = (float)gameTime.TotalGameTime.TotalSeconds;
 
             Score += 1;
+            if (Score > HiScore)
+            {
+                HiScore = Score;
+            }
 
             if (alpha < 1.0)
             {
@@ -242,6 +240,13 @@ namespace monogame.States
             {
                 _game.ChangeState(new PauseState(_game, _graphicsDevice, _content));
             }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            {
+                _game.ChangeState(new GameOverState(_game, _graphicsDevice, _content));
+            }
+
+            
 
             // if (Keyboard.GetState().IsKeyDown(Keys.L))
             // {

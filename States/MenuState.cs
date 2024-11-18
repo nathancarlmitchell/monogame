@@ -11,12 +11,15 @@ namespace monogame.States
     public class MenuState : State
     {
         private List<Button> _components;
+        public static SpriteFont titleFont;
         private Menu _mainMenu;
 
         public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = true;
+
+            titleFont = _content.Load<SpriteFont>("TitleFont");
 
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("HudFont");
@@ -62,6 +65,8 @@ namespace monogame.States
             spriteBatch.Begin();
 
             _mainMenu.Draw(gameTime, spriteBatch);
+
+            spriteBatch.DrawString(titleFont, "Flappy Box", new Vector2(CenterWidth / 2, 128), Color.AliceBlue, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
             spriteBatch.End();
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -89,21 +90,9 @@ namespace monogame
 
         public void ChangeSkin(string skin)
         {
-            switch (skin)
-            {
-                case "anim_idle_pink":
-                    playerIdleTexture.Load(_content, "anim_idle_pink", frames, framesPerSec);
-                    playerJumpTexture.Load(_content, "anim_jump_pink", frames, framesPerSec);
-                    break;
-                case "anim_idle_red":
-                    playerIdleTexture.Load(_content, "anim_idle_red", frames, framesPerSec);
-                    playerJumpTexture.Load(_content, "anim_jump_red", frames, framesPerSec);
-                    break;
-                case "anim_idle":
-                    playerIdleTexture.Load(_content, "anim_idle_default", frames, framesPerSec);
-                    playerJumpTexture.Load(_content, "anim_jump_default", frames, framesPerSec);
-                    break;
-            }
+            string _name = skin.Split("_").Last();
+            playerIdleTexture.Load(_content, "anim_idle_" + _name, frames, framesPerSec);
+            playerJumpTexture.Load(_content, "anim_jump_" + _name, frames, framesPerSec);
 
             currentTexture = playerIdleTexture;   
         }
