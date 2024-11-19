@@ -28,7 +28,7 @@ namespace monogame
             wall2 = new Wall(content);
 
             int gap = (int)Math.Floor(rand.NextDouble() * (maxGap - minGap + 1) + minGap);
-            int maxHeight = _screenHeight - gap;
+            int maxHeight = _screenHeight - gap - minGap;
             int height = (int)Math.Floor(rand.NextDouble() * (maxHeight - minHeight + 1) + minHeight);
             int tileHeight = (int)Math.Ceiling((double)height / 64);
             int heightDifference = (tileHeight * 64) - height;

@@ -16,7 +16,7 @@ namespace monogame.States
     {
         private List<Button> _components;
         private Menu _menu;
-        //private Texture2D borderTexture;
+
         public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
         : base(game, graphicsDevice, content)
         {
@@ -25,8 +25,9 @@ namespace monogame.States
             Util.SaveGameData(GameState.Score, GameState.Coins);
             Util.SaveSkinData();
 
+            Background.SetAlpha(0.33f);
+
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
-            //borderTexture = _content.Load<Texture2D>("border");
             var buttonFont = _content.Load<SpriteFont>("HudFont");
 
             var newGameButton = new Button(buttonTexture, buttonFont)
@@ -36,6 +37,14 @@ namespace monogame.States
             };
 
             newGameButton.Click += NewGameButton_Click;
+
+            var mainMenuButton = new Button(buttonTexture, buttonFont)
+            {
+                Position = new Vector2(CenterWidth, 250),
+                Text = "Main Menu",
+            };
+
+            mainMenuButton.Click += MainMenuButton_Click;
 
             var quitGameButton = new Button(buttonTexture, buttonFont)
             {
@@ -48,6 +57,7 @@ namespace monogame.States
             _components = new List<Button>()
             {
                 newGameButton,
+                mainMenuButton,
                 quitGameButton
             };
 
@@ -58,20 +68,18 @@ namespace monogame.States
         {
             spriteBatch.Begin();
 
-            //spriteBatch.Draw(borderTexture, new Rectangle(0, 0, borderTexture.Height, borderTexture.Width), null, Color.White);
-                        // Draw HUD.
+            Background.Draw(gameTime, spriteBatch);
+
+            // Draw HUD.
             spriteBatch.DrawString(GameState.hudFont, "Score: " + GameState.Score, new Vector2(32, 64), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             spriteBatch.DrawString(GameState.hudFont, "Hi Score: " + GameState.HiScore, new Vector2(32, 92), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             spriteBatch.DrawString(GameState.hudFont, " x " + GameState.Coins, new Vector2(GameState.coinHUD.X + 16, GameState.coinHUD.Y - 8),
                 Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             GameState.coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(GameState.coinHUD.X, GameState.coinHUD.Y));
 
-            _menu.Draw(gameTime, spriteBatch);
-
             spriteBatch.DrawString(MenuState.titleFont, "Game Over", new Vector2(CenterWidth / 2, 128), Color.AliceBlue, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
-            // spriteBatch.DrawString(GameState.hudFont, "Coins: " + GameState.Coins, new Vector2(ControlWidthCenter, CenterHeight/4),
-            //     Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            _menu.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }
@@ -81,8 +89,15 @@ namespace monogame.States
             Game1._gameState = null;
             GameState.Score = 0;
             GameState.Coins = 0;
-
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+        }
+
+        private void MainMenuButton_Click(object sender, EventArgs e)
+        {
+            Game1._gameState = null;
+            GameState.Score = 0;
+            GameState.Coins = 0;
+            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)
@@ -99,6 +114,8 @@ namespace monogame.States
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            Background.Update(gameTime);
+
             GameState.coinHUD.coinTexture.UpdateFrame(elapsed);
 
             foreach (var component in _components)
@@ -109,6 +126,9 @@ namespace monogame.States
             // Check player input.
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
+                Game1._gameState = null;
+                GameState.Score = 0;
+                GameState.Coins = 0;
                 _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
         }

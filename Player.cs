@@ -10,23 +10,21 @@ namespace monogame
     public class Player : Object
     {
         protected ContentManager _content;
-        private AnimatedTexture playerIdleTexture, playerJumpTexture;
+        private AnimatedTexture playerIdleTexture, playerJumpTexture, wingLeft, wingRight;
         public AnimatedTexture currentTexture;
 
-        // The rotation of the character on screen
+
         private const float rotation = 0;
-        // The scale of the character, how big it is drawn
         private const float scale = 1f;
-        // The draw order of the sprite
         private const float depth = 0.5f;
-        // How many frames/images are included in the animation
+
         private const int frames = 2;
-        private const int framesPerSec = 4;
+        private const int framesPerSec = 8;
 
         private const int maxVelocity = 64;
         public int JumpVelocity { get; } = 14;
         public int Velocity { get; set; } = 14;
-        public String CurrentSkin { get; set; }
+        public string Skin { get; set; }
 
         public Player(ContentManager content)
         {
@@ -35,21 +33,32 @@ namespace monogame
             this.Height = 64;
             this.Width = 64;
 
+            int wingSize = 16;
+
             playerIdleTexture = new AnimatedTexture(new Vector2(this.Height / 2, this.Width / 2), rotation, scale, depth);
             playerIdleTexture.Load(_content, "anim_idle_default", frames, framesPerSec);
 
             playerJumpTexture = new AnimatedTexture(new Vector2(this.Height / 2, this.Width / 2), rotation, scale, depth);
             playerJumpTexture.Load(_content, "anim_jump_default", frames, framesPerSec);
 
+            wingLeft = new AnimatedTexture(new Vector2(wingSize / 2, wingSize / 2), rotation, scale, depth);
+            wingLeft.Load(_content, "wing_left", 1, 0);
+
+            wingRight = new AnimatedTexture(new Vector2(wingSize / 2, wingSize / 2), rotation, scale, depth);
+            wingRight.Load(_content, "wing_right", 1, 0);
+
             currentTexture = playerIdleTexture;
         }
 
         public void ChangeVelocity(int change)
         {
-            if (currentTexture != playerIdleTexture)
+            if (this.Velocity > 0)
             {
-                currentTexture = playerIdleTexture;
-                //currentTexture.Reset();
+                if (currentTexture != playerIdleTexture)
+                {
+                    currentTexture = playerIdleTexture;
+                    //currentTexture.Reset();
+                }
             }
 
             if (Math.Abs(this.Velocity) >= maxVelocity + 1)
@@ -95,6 +104,29 @@ namespace monogame
             playerJumpTexture.Load(_content, "anim_jump_" + _name, frames, framesPerSec);
 
             currentTexture = playerIdleTexture;   
+        }
+
+        public void Update(float elapsed, GameTime gameTime)
+        {
+            // Update player animation.
+            this.currentTexture.UpdateFrame(elapsed);
+
+            // Update player velocity.
+            this.Y -= this.Velocity / 2;
+            if ((int)gameTime.TotalGameTime.TotalMilliseconds % (2) == 0)
+            {
+                this.ChangeVelocity(-1);
+            }
+        }
+
+        public void Draw(SpriteBatch _spriteBatch)
+        {
+            // Draw player texture.
+            this.currentTexture.DrawFrame(_spriteBatch, new Vector2(this.X, this.Y));
+
+            // Draw wings.
+            this.wingLeft.DrawFrame(_spriteBatch, new Vector2(this.X - 32 - 4, this.Y + 16));
+            this.wingRight.DrawFrame(_spriteBatch, new Vector2(this.X + this.Width - 32 + 4, this.Y + 16));
         }
 
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -95,22 +96,48 @@ namespace monogame.States
         {
             spriteBatch.Begin();
 
+            spriteBatch.DrawString(GameState.hudFont, " x " + GameState.Coins, new Vector2(GameState.coinHUD.X + 16, GameState.coinHUD.Y - 8),
+                Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            GameState.coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(GameState.coinHUD.X, GameState.coinHUD.Y));
+
             for (int i = 0; i < Skins.Count; i++)
             {
                 int centerComponent = _totalComponents / 2;
                 _difference = i - centerComponent;
                 int _x = MenuState.CenterWidth + _difference * 100 - (64 / _totalComponents);
                 int _y = _centerHeight - 128 - 16;
-                if (Skins[i].Selected)
+
+                if (Skins[i].Locked)
                 {
-                    arrowSprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 64));
-                    Skins[i].Position = new Vector2(MenuState.CenterWidth + _difference * 100 - (64 / _totalComponents), _centerHeight - 128 - 16);
+                    //Console.WriteLine("Locked.");
+                    Skins[i].LoadTexture(_content, "anim_idle_locked");
+                    spriteBatch.DrawString(GameState.hudFont, " x " + Skins[i].Cost, new Vector2(_x, _y + 72),
+                        Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
                 }
                 else
                 {
-                    Skins[i].Position = new Vector2(MenuState.CenterWidth + _difference * 100 - (64 / _totalComponents), _centerHeight - 128);
+                    //Console.WriteLine("UnLocked.");
                 }
-                Skins[i].Draw(spriteBatch);
+
+                if (Skins[i].Selected)
+                {
+                    arrowSprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 16 - 64));
+                    Skins[i].Position = new Vector2(_x, _y - 16);
+                }
+                else
+                {
+                    Skins[i].Position = new Vector2(_x, _y);
+                }
+                
+                //if (!Skins[i].Locked)
+                //{
+                    Skins[i].Draw(spriteBatch);
+                //}
+                // else
+                // {
+                //     Skins.Last().Draw(spriteBatch);
+                // }
+                
             }
 
             _menu.Draw(gameTime, spriteBatch);
@@ -122,11 +149,32 @@ namespace monogame.States
         {
             Skin skin = (Skin)sender;
 
-            for (int i = 0; i < Skins.Count; i++)
+            if (!skin.Locked)
             {
-                Skins[i].Deactivate();
+                for (int i = 0; i < Skins.Count; i++)
+                {
+                    Skins[i].Deactivate();
+                }
+
+                skin.Activate();
+            } 
+            else
+            {
+                if (GameState.Coins >= skin.Cost)
+                {
+                    for (int i = 0; i < Skins.Count; i++)
+                    {
+                        Skins[i].Deactivate();
+                    }
+                    GameState.Coins -= skin.Cost;
+                    skin.Locked = false;
+                    skin.Activate();
+                    Console.WriteLine("Skin unlocked.");
+                }
+                Console.WriteLine("Skin Locked.");        
             }
-            skin.Activate();
+            
+            Util.SaveGameData(GameState.Score, GameState.Coins);
             Util.SaveSkinData();
         }
 

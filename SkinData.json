@@ -1,1 +1,1 @@
-[{"Name":"anim_idle_default","Selected":false},{"Name":"anim_idle_red","Selected":false},{"Name":"anim_idle_pink","Selected":false},{"Name":"anim_idle_locked","Selected":true}]
+[{"Name":"anim_idle_default","Selected":false,"Locked":false,"Cost":0},{"Name":"anim_idle_red","Selected":false,"Locked":false,"Cost":5},{"Name":"anim_idle_pink","Selected":true,"Locked":false,"Cost":10},{"Name":"anim_idle_locked","Selected":false,"Locked":true,"Cost":25}]

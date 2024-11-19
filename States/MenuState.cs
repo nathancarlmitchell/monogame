@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,6 +18,10 @@ namespace monogame.States
         public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
         {
+            new GameState(_game, _graphicsDevice, _content);
+            Background.LoadContent(_content);
+            Background.SetAlpha(0.5);
+
             _game.IsMouseVisible = true;
 
             titleFont = _content.Load<SpriteFont>("TitleFont");
@@ -64,8 +69,13 @@ namespace monogame.States
         {          
             spriteBatch.Begin();
 
+            // Draw background.
+            Background.Draw(gameTime, spriteBatch);
+
+            // Draw menu.
             _mainMenu.Draw(gameTime, spriteBatch);
 
+            // Draw title.
             spriteBatch.DrawString(titleFont, "Flappy Box", new Vector2(CenterWidth / 2, 128), Color.AliceBlue, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
             spriteBatch.End();
@@ -88,6 +98,8 @@ namespace monogame.States
 
         public override void Update(GameTime gameTime)
         {
+            Background.Update(gameTime);
+
             foreach (var component in _components)
             {
                 component.Update(gameTime);

@@ -11,7 +11,7 @@ namespace monogame
     public static class Util
     {
 
-        private static string gameDataLocation = "data.json";
+        private static string gameDataLocation = "GameData.json";
         private static string skinDataLocation = "SkinData.json";
 
         public static void LoadGameData()
@@ -37,26 +37,24 @@ namespace monogame
         public static void SaveGameData(int currentScore, int currentCoins)
         {
             GameData data = new GameData();
+            string json;
 
             using (StreamReader r = new StreamReader(gameDataLocation))
             {
-                string json = r.ReadToEnd();
+                json = r.ReadToEnd();
                 data = JsonSerializer.Deserialize<GameData>(json);
             }
 
             if (currentScore > data.HighScore)
             {
                 data.HighScore = currentScore;
-                string json = JsonSerializer.Serialize(data);
+                json = JsonSerializer.Serialize(data);
                 File.WriteAllText(gameDataLocation, json);
             }
 
-            if (currentCoins > data.Coins)
-            {
-                data.Coins = currentCoins;
-                string json = JsonSerializer.Serialize(data);
-                File.WriteAllText(gameDataLocation, json);
-            }
+            data.Coins = currentCoins;
+            json = JsonSerializer.Serialize(data);
+            File.WriteAllText(gameDataLocation, json);
         }
 
         public static void LoadSkinData(ContentManager content)
@@ -73,6 +71,8 @@ namespace monogame
                     Skin skin = new Skin(content, skinData[i].Name);
                     skin.Name = skinData[i].Name;
                     skin.Selected = skinData[i].Selected;
+                    skin.Locked = skinData[i].Locked;
+                    skin.Cost = skinData[i].Cost;
                     SkinsState.Skins.Add(skin);
                 }
             }
@@ -88,13 +88,14 @@ namespace monogame
                     SkinData skin = new SkinData();
                     skin.Name = SkinsState.Skins[i].Name;
                     skin.Selected = SkinsState.Skins[i].Selected;
+                    skin.Locked = SkinsState.Skins[i].Locked;
+                    skin.Cost = SkinsState.Skins[i].Cost;
                     skinData.Add(skin);
                 }
                 string json = JsonSerializer.Serialize(skinData);
-                Console.WriteLine("Save skins.");
                 File.WriteAllText(skinDataLocation, json);
             }
         }
     }
-    
+
 }

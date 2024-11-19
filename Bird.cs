@@ -38,7 +38,7 @@ namespace monogame
             int maxHeight = GameState.ScreenHeight - 128;
             int height = (int)Math.Floor(rand.NextDouble() * (maxHeight - minHeight + 1) + minHeight);
 
-            this.X = GameState.ScreenWidth;
+            this.X = GameState.ScreenWidth + 128;
             this.Y = height;
         }
 

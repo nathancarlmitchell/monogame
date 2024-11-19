@@ -15,11 +15,12 @@ namespace monogame
         private AnimatedTexture _texture;
         private const int frames = 2;
         private const int framesPerSec = 2;
-        public String Name { get; set; }
+        public string Name { get; set; }
         private MouseState _currentMouse, _previousMouse;
-        private Rectangle targetRectangle;
         private bool _isHovering;
         public bool Selected { get; set; }
+        public bool Locked { get; set; }
+        public int Cost { get; set; }
         public Vector2 Position { get; set; }
         public event EventHandler Click;
         public bool Clicked { get; private set; }
@@ -40,9 +41,12 @@ namespace monogame
             // Load the texture.
             _texture = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
             _texture.Load(_content, texture, frames, framesPerSec);
+        }
 
-            // Define a drawing rectangle based on the number of tiles wide and high, using the texture dimensions.
-            targetRectangle = new Rectangle(0, 0, 64, 64);
+        public void LoadTexture(ContentManager content, String texture)
+        {
+            _texture = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
+            _texture.Load(content, texture, frames, framesPerSec);
         }
 
 
@@ -59,7 +63,6 @@ namespace monogame
             _texture.Load(_content, "anim_idle_" + _name, frames, framesPerSec);
             this.Selected = false;
         }
-
 
         public void Update(GameTime gameTime)
         {
