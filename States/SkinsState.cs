@@ -48,31 +48,6 @@ namespace monogame.States
 
             _menu = new Menu(_components);
 
-
-            // Create skins list
-            // Skin skin1 = new Skin(content, "anim_idle_default");
-            // Skin skin2 = new Skin(content, "anim_idle_red");
-            // Skin skin3 = new Skin(content, "anim_idle_pink");
-            // Skin skin4 = new Skin(content, "anim_idle_locked");
-
-            // String currrentSkin = null;
-            // if (GameState.player is not null)
-            // {
-            //     currrentSkin = GameState.player.CurrentSkin;
-            // } 
-            // else
-            // {
-            //     skin1.Selected = true;
-            // }
-
-            // Skins = new List<Skin>()
-            // {
-            //     skin1,
-            //     skin2,
-            //     skin3,
-            //     skin4
-            // };
-
             Util.LoadSkinData(content);
 
             _centerHeight = MenuState.CenterHeight;
@@ -84,12 +59,9 @@ namespace monogame.States
                 _totalComponents = Skins.Count;
                 int centerComponent = _totalComponents / 2;
                 _difference = i - centerComponent;                
-
-                // if (currrentSkin is not null && Skins[i].Name == currrentSkin)
-                // {
-                //     Skins[i].Selected = true;
-                // }
             }
+
+            Skins = Skins.OrderBy(o=>o.Cost).ToList();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -114,30 +86,19 @@ namespace monogame.States
                     spriteBatch.DrawString(GameState.hudFont, " x " + Skins[i].Cost, new Vector2(_x, _y + 72),
                         Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
                 }
-                else
-                {
-                    //Console.WriteLine("UnLocked.");
-                }
 
                 if (Skins[i].Selected)
                 {
                     arrowSprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 16 - 64));
                     Skins[i].Position = new Vector2(_x, _y - 16);
+                    //Skins[i].Activate();
                 }
                 else
                 {
                     Skins[i].Position = new Vector2(_x, _y);
                 }
                 
-                //if (!Skins[i].Locked)
-                //{
-                    Skins[i].Draw(spriteBatch);
-                //}
-                // else
-                // {
-                //     Skins.Last().Draw(spriteBatch);
-                // }
-                
+                Skins[i].Draw(spriteBatch);
             }
 
             _menu.Draw(gameTime, spriteBatch);
@@ -182,7 +143,6 @@ namespace monogame.States
         {
             _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
         }
-
 
         public override void PostUpdate(GameTime gameTime)
         {

@@ -13,8 +13,8 @@ namespace monogame
     {
         protected ContentManager _content;
         private AnimatedTexture _texture;
-        private const int frames = 2;
-        private const int framesPerSec = 2;
+        public int Frames = 2;
+        public int FPS = 2;
         public string Name { get; set; }
         private MouseState _currentMouse, _previousMouse;
         private bool _isHovering;
@@ -40,27 +40,27 @@ namespace monogame
 
             // Load the texture.
             _texture = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
-            _texture.Load(_content, texture, frames, framesPerSec);
+            _texture.Load(_content, texture, Frames, FPS);
         }
 
         public void LoadTexture(ContentManager content, String texture)
         {
             _texture = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
-            _texture.Load(content, texture, frames, framesPerSec);
+            _texture.Load(content, texture, Frames, FPS);
         }
 
 
         public void Activate()
         {
             string _name = this.Name.Split("_").Last();
-            _texture.Load(_content, "anim_jump_" + _name, frames, framesPerSec);
+            _texture.Load(_content, "anim_jump_" + _name, Frames, FPS);
             this.Selected = true;
         }
 
         public void Deactivate()
         {
             string _name = this.Name.Split("_").Last();
-            _texture.Load(_content, "anim_idle_" + _name, frames, framesPerSec);
+            _texture.Load(_content, "anim_idle_" + _name, Frames, FPS);
             this.Selected = false;
         }
 

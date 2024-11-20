@@ -23,15 +23,8 @@ namespace monogame
                 data = JsonSerializer.Deserialize<GameData>(json);
             }
 
-            if (data.HighScore > GameState.HiScore)
-            {
-                GameState.HiScore = data.HighScore;
-            }
-
-            if (data.Coins > GameState.Coins)
-            {
-                GameState.Coins = data.Coins;
-            }
+            GameState.HiScore = data.HighScore;
+            GameState.Coins = data.Coins;
         }
 
         public static void SaveGameData(int currentScore, int currentCoins)
@@ -73,6 +66,9 @@ namespace monogame
                     skin.Selected = skinData[i].Selected;
                     skin.Locked = skinData[i].Locked;
                     skin.Cost = skinData[i].Cost;
+                    skin.Frames = skinData[i].Frames;
+                    skin.FPS = skinData[i].FPS;
+                    skin.LoadTexture(content, skin.Name);
                     SkinsState.Skins.Add(skin);
                 }
             }
@@ -90,6 +86,8 @@ namespace monogame
                     skin.Selected = SkinsState.Skins[i].Selected;
                     skin.Locked = SkinsState.Skins[i].Locked;
                     skin.Cost = SkinsState.Skins[i].Cost;
+                    skin.Frames = SkinsState.Skins[i].Frames;
+                    skin.FPS = SkinsState.Skins[i].FPS;
                     skinData.Add(skin);
                 }
                 string json = JsonSerializer.Serialize(skinData);

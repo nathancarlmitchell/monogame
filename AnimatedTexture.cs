@@ -19,10 +19,10 @@ namespace monogame
         private float timePerFrame;
 
         // The current frame being drawn.
-        private int frame;
+        public int Frame;
 
         // Total amount of time the animation has been running.
-        private float totalElapsed;
+        public float Elapsed;
 
         // Is the animation currently running?
         private bool isPaused;
@@ -46,8 +46,8 @@ namespace monogame
             this.frameCount = frameCount;
             myTexture = content.Load<Texture2D>(asset);
             timePerFrame = (float)1 / framesPerSec;
-            frame = 0;
-            totalElapsed = 0;
+            Frame = 0;
+            Elapsed = 0;
             isPaused = false;
         }
 
@@ -57,30 +57,30 @@ namespace monogame
             {
                 return;
             }
-            totalElapsed += elapsed;
-            if (totalElapsed > timePerFrame)
+            Elapsed += elapsed;
+            if (Elapsed > timePerFrame)
             {
-                frame++;
+                Frame++;
                 // Keep the Frame between 0 and the total frames, minus one.
-                frame %= frameCount;
-                totalElapsed -= timePerFrame;
+                Frame %= frameCount;
+                Elapsed -= timePerFrame;
             }
         }
 
         public void DrawFrame(SpriteBatch batch, Vector2 screenPos)
         {
-            DrawFrame(batch, frame, screenPos);
+            DrawFrame(batch, Frame, screenPos);
         }
 
         public void DrawFrame(SpriteBatch batch, Vector2 screenPos, float alpha)
         {
-            DrawFrame(batch, frame, screenPos, alpha);
+            DrawFrame(batch, Frame, screenPos, alpha);
         }
 
         public void DrawFrame(SpriteBatch batch, Vector2 screenPos, Color color)
         {
             int FrameWidth = myTexture.Width / frameCount;
-            Rectangle sourcerect = new Rectangle(FrameWidth * frame, 0,
+            Rectangle sourcerect = new Rectangle(FrameWidth * Frame, 0,
                 FrameWidth, myTexture.Height);
             batch.Draw(myTexture, screenPos, sourcerect, color,
                 Rotation, Origin, Scale, SpriteEffects.None, Depth);
@@ -111,8 +111,8 @@ namespace monogame
 
         public void Reset()
         {
-            frame = 0;
-            totalElapsed = 0f;
+            Frame = 0;
+            Elapsed = 0f;
         }
 
         public void Stop()

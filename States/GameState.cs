@@ -13,11 +13,9 @@ namespace monogame.States
     {
         public static SpriteFont hudFont, debugFont;
         private Texture2D wallTexture;
-        private Object bgObject;
         public static Player player;
         public static List<Skin> Skins { get; set; }
         public static Coin coinHUD;
-        //private Bird bird;
         private List<Wall> wallArray;
         private List<Coin> coinArray;
         private WallSpawner wallSpawner;
@@ -27,8 +25,6 @@ namespace monogame.States
         public static int Score { get; set; }
         public static int HiScore { get; set; }
         public static int Coins { get; set; }
-
-        //private Load data;
 
         public GameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
@@ -72,8 +68,8 @@ namespace monogame.States
                     if (GameState.Skins[i].Selected)
                     {
                         Console.WriteLine("skins[i].Name: " + GameState.Skins[i].Name);
-                        player.ChangeSkin(GameState.Skins[i].Name);
-                        player.Skin = GameState.Skins[i].Name;
+                        player.ChangeSkin(GameState.Skins[i].Name, GameState.Skins[i].Frames, GameState.Skins[i].FPS);
+                        player.SkinName = GameState.Skins[i].Name;
                     }
                 }
             }
@@ -175,12 +171,15 @@ namespace monogame.States
             // Update wall positions and check collisions.
             for (int i = 0; i < wallArray.Count; i++)
             {
+                // Check collisions.
                 if (player.CheckForCollisions(wallArray[i]))
                 {
                     _game.ChangeState(new GameOverState(_game, _graphicsDevice, _content));
                 }
 
                 wallArray[i].Move();
+
+                // Remove walls off screen.
                 if (wallArray[i].X + wallArray[i].Width < 0)
                 {
                     wallArray.Remove(wallArray[i]);

@@ -18,13 +18,13 @@ namespace monogame
         private const float scale = 1f;
         private const float depth = 0.5f;
 
-        private const int frames = 2;
-        private const int framesPerSec = 8;
+        public int Frames;
+        public int FPS;
 
         private const int maxVelocity = 64;
         public int JumpVelocity { get; } = 14;
         public int Velocity { get; set; } = 14;
-        public string Skin { get; set; }
+        public string SkinName { get; set; }
 
         public Player(ContentManager content)
         {
@@ -36,10 +36,10 @@ namespace monogame
             int wingSize = 16;
 
             playerIdleTexture = new AnimatedTexture(new Vector2(this.Height / 2, this.Width / 2), rotation, scale, depth);
-            playerIdleTexture.Load(_content, "anim_idle_default", frames, framesPerSec);
+            playerIdleTexture.Load(_content, "anim_idle_default", this.Frames, this.FPS);
 
             playerJumpTexture = new AnimatedTexture(new Vector2(this.Height / 2, this.Width / 2), rotation, scale, depth);
-            playerJumpTexture.Load(_content, "anim_jump_default", frames, framesPerSec);
+            playerJumpTexture.Load(_content, "anim_jump_default", this.Frames, this.FPS);
 
             wingLeft = new AnimatedTexture(new Vector2(wingSize / 2, wingSize / 2), rotation, scale, depth);
             wingLeft.Load(_content, "wing_left", 1, 0);
@@ -52,12 +52,12 @@ namespace monogame
 
         public void ChangeVelocity(int change)
         {
-            if (this.Velocity > 0)
+            if (this.Velocity < -2)
             {
-                if (currentTexture != playerIdleTexture)
+                if (currentTexture != playerIdleTexture && this.Frames-1 == currentTexture.Frame)
                 {
+                    currentTexture.Reset();
                     currentTexture = playerIdleTexture;
-                    //currentTexture.Reset();
                 }
             }
 
@@ -75,14 +75,13 @@ namespace monogame
             {
                 if (currentTexture != playerJumpTexture)
                 {
-                    currentTexture = playerJumpTexture;
-                    //currentTexture.Reset();
+                    currentTexture.Reset();
+                    currentTexture = playerJumpTexture;  
                 }
                 return;
             }
             this.Velocity = _jumpVelocity;
         }
-
 
         public void Bounce()
         {
@@ -97,11 +96,14 @@ namespace monogame
             }
         }
 
-        public void ChangeSkin(string skin)
+        public void ChangeSkin(string skin, int frames, int fps)
         {
+            this.Frames = frames;
+            this.FPS = fps;
+
             string _name = skin.Split("_").Last();
-            playerIdleTexture.Load(_content, "anim_idle_" + _name, frames, framesPerSec);
-            playerJumpTexture.Load(_content, "anim_jump_" + _name, frames, framesPerSec);
+            playerIdleTexture.Load(_content, "anim_idle_" + _name, frames, fps);
+            playerJumpTexture.Load(_content, "anim_jump_" + _name, frames, fps);
 
             currentTexture = playerIdleTexture;   
         }

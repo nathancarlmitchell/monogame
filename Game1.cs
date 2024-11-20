@@ -39,6 +39,7 @@ namespace monogame
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
+            //graphics.PreferMultiSampling = true;
             graphics.ApplyChanges();
 
             base.Initialize();

@@ -50,14 +50,18 @@ namespace monogame.States
             backgroundTexture = content.Load<Texture2D>("bg");
             cloudTexture = content.Load<Texture2D>("cloud");
 
-            cloud = new Object();
-            cloud.X = 200;
-            cloud.Y = 200;
+            cloud = new Object
+            {
+                X = 200,
+                Y = 200
+            };
 
             // Load background objects
-            bg = new Object();
-            bg.X = 0;
-            bg.Y = 0;
+            bg = new Object
+            {
+                X = 0,
+                Y = 0
+            };
 
             bird = new Bird(content);
             bird.Reset();
