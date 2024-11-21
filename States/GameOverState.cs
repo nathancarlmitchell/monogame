@@ -71,8 +71,13 @@ namespace monogame.States
             Background.Draw(gameTime, spriteBatch);
 
             // Draw HUD.
-            spriteBatch.DrawString(GameState.hudFont, "Score: " + GameState.Score, new Vector2(32, 64), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
-            spriteBatch.DrawString(GameState.hudFont, "Hi Score: " + GameState.HiScore, new Vector2(32, 92), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            var color = Color.Black;
+            if (GameState.Score >= GameState.HiScore)
+            {
+                color = Color.Yellow;
+            }
+            spriteBatch.DrawString(GameState.hudFont, "Score: " + GameState.Score, new Vector2(32, 64), color, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            spriteBatch.DrawString(GameState.hudFont, "Hi Score: " + GameState.HiScore, new Vector2(32, 92), color, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             spriteBatch.DrawString(GameState.hudFont, " x " + GameState.Coins, new Vector2(GameState.coinHUD.X + 16, GameState.coinHUD.Y - 8),
                 Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             GameState.coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(GameState.coinHUD.X, GameState.coinHUD.Y));

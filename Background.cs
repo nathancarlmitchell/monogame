@@ -52,7 +52,7 @@ namespace monogame.States
 
             cloud = new Object
             {
-                X = 200,
+                X = 250,
                 Y = 200
             };
 

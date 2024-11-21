@@ -21,6 +21,11 @@ namespace monogame
         private List<Wall> wallList;
         private Wall wall1, wall2;
 
+        public WallSpawner(ContentManager content)
+        {
+            Wall.LoadTexture(content);
+        }
+
         public List<Wall> Spawn(ContentManager content)
         {
             wallList = new List<Wall>();
@@ -32,7 +37,7 @@ namespace monogame
             int height = (int)Math.Floor(rand.NextDouble() * (maxHeight - minHeight + 1) + minHeight);
             int tileHeight = (int)Math.Ceiling((double)height / 64);
             int heightDifference = (tileHeight * 64) - height;
-            
+
             wall1.X = _screenWidth;
             wall1.Y = 0;
             wall1.Width = width;

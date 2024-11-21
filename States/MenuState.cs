@@ -19,8 +19,6 @@ namespace monogame.States
           : base(game, graphicsDevice, content)
         {
             new GameState(_game, _graphicsDevice, _content);
-            Background.LoadContent(_content);
-            Background.SetAlpha(0.5);
 
             _game.IsMouseVisible = true;
 

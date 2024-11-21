@@ -1,1 +1,66 @@
-[{"Name":"anim_idle_default","Selected":false,"Locked":false,"Cost":0,"Frames":2,"FPS":2},{"Name":"anim_idle_red","Selected":false,"Locked":false,"Cost":5,"Frames":2,"FPS":2},{"Name":"anim_idle_rubiks","Selected":true,"Locked":false,"Cost":5,"Frames":4,"FPS":8},{"Name":"anim_idle_pink","Selected":false,"Locked":false,"Cost":10,"Frames":2,"FPS":2},{"Name":"anim_idle_companion","Selected":false,"Locked":false,"Cost":10,"Frames":4,"FPS":8},{"Name":"anim_idle_locked","Selected":false,"Locked":false,"Cost":25,"Frames":2,"FPS":2}]
+[
+    {
+        "Name": "anim_idle_default",
+        "Selected": false,
+        "Locked": false,
+        "Cost": 0,
+        "Frames": 2,
+        "FPS": 2
+    },
+    {
+        "Name": "anim_idle_pink",
+        "Selected": false,
+        "Locked": false,
+        "Cost": 3,
+        "Frames": 2,
+        "FPS": 2
+    },
+    {
+        "Name": "anim_idle_clear",
+        "Selected": false,
+        "Locked": false,
+        "Cost": 5,
+        "Frames": 2,
+        "FPS": 2
+    },
+    {
+        "Name": "anim_idle_rubiks",
+        "Selected": false,
+        "Locked": false,
+        "Cost": 10,
+        "Frames": 4,
+        "FPS": 12
+    },
+    {
+        "Name": "anim_idle_companion",
+        "Selected": true,
+        "Locked": false,
+        "Cost": 15,
+        "Frames": 4,
+        "FPS": 8
+    },
+    {
+        "Name": "anim_idle_dice",
+        "Selected": false,
+        "Locked": false,
+        "Cost": 15,
+        "Frames": 6,
+        "FPS": 12
+    },
+    {
+        "Name": "anim_idle_locked",
+        "Selected": false,
+        "Locked": false,
+        "Cost": 25,
+        "Frames": 2,
+        "FPS": 2
+    },
+    {
+        "Name": "anim_idle_tv",
+        "Selected": false,
+        "Locked": false,
+        "Cost": 25,
+        "Frames": 4,
+        "FPS": 16
+    }
+]

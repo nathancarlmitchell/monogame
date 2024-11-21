@@ -15,20 +15,18 @@ namespace monogame.States
     {
         private List<Button> _components;
         private Menu _menu;
-        private AnimatedTexture arrowSprite;
+        private AnimatedTexture _arrowSprite;
         public static List<Skin> Skins { get; set; }
-        private int _difference;
-        private int _totalComponents;
-        private int _centerHeight;
-        private int _centerWidth;
 
         public SkinsState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
         : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = true;
 
-            arrowSprite = new AnimatedTexture(new Vector2(0,0), 0, 1f, 0.5f);
-            arrowSprite.Load(_content, "arrow", 4, 4);
+            Background.SetAlpha(0.5f);
+
+            _arrowSprite = new AnimatedTexture(new Vector2(0,0), 0, 1f, 0.5f);
+            _arrowSprite.Load(_content, "arrow", 4, 4);
 
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
             var buttonFont = _content.Load<SpriteFont>("HudFont");
@@ -39,7 +37,7 @@ namespace monogame.States
                 Text = "Back",
             };
 
-            backButton.Click += backButton_Click;
+            backButton.Click += BackButton_Click;
 
             _components = new List<Button>()
             {
@@ -50,15 +48,14 @@ namespace monogame.States
 
             Util.LoadSkinData(content);
 
-            _centerHeight = MenuState.CenterHeight;
-            _centerWidth = MenuState.ControlWidthCenter;
-
             for (int i = 0; i < Skins.Count; i++)
             {
                 Skins[i].Click += Skin_Click;
-                _totalComponents = Skins.Count;
-                int centerComponent = _totalComponents / 2;
-                _difference = i - centerComponent;                
+
+                if (Skins[i].Selected)
+                {
+                    Skins[i].Activate();
+                }           
             }
 
             Skins = Skins.OrderBy(o=>o.Cost).ToList();
@@ -68,20 +65,21 @@ namespace monogame.States
         {
             spriteBatch.Begin();
 
+            Background.Draw(gameTime, spriteBatch);
+
             spriteBatch.DrawString(GameState.hudFont, " x " + GameState.Coins, new Vector2(GameState.coinHUD.X + 16, GameState.coinHUD.Y - 8),
                 Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             GameState.coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(GameState.coinHUD.X, GameState.coinHUD.Y));
 
             for (int i = 0; i < Skins.Count; i++)
             {
-                int centerComponent = _totalComponents / 2;
-                _difference = i - centerComponent;
-                int _x = MenuState.CenterWidth + _difference * 100 - (64 / _totalComponents);
-                int _y = _centerHeight - 128 - 16;
+                int _centerComponent = Skins.Count / 2;
+                int _difference = i - _centerComponent;
+                int _x = MenuState.CenterWidth + _difference * 100 - (64 / Skins.Count);
+                int _y = MenuState.CenterHeight - 128 - 16;
 
                 if (Skins[i].Locked)
                 {
-                    //Console.WriteLine("Locked.");
                     Skins[i].LoadTexture(_content, "anim_idle_locked");
                     spriteBatch.DrawString(GameState.hudFont, " x " + Skins[i].Cost, new Vector2(_x, _y + 72),
                         Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
@@ -89,9 +87,8 @@ namespace monogame.States
 
                 if (Skins[i].Selected)
                 {
-                    arrowSprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 16 - 64));
+                    _arrowSprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 16 - 64));
                     Skins[i].Position = new Vector2(_x, _y - 16);
-                    //Skins[i].Activate();
                 }
                 else
                 {
@@ -139,7 +136,7 @@ namespace monogame.States
             Util.SaveSkinData();
         }
 
-        private void backButton_Click(object sender, EventArgs e)
+        private void BackButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
         }
@@ -153,6 +150,10 @@ namespace monogame.States
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            Background.Update(gameTime);
+
+            GameState.coinHUD.coinTexture.UpdateFrame(elapsed);
+
             foreach (var component in _components)
             {
                 component.Update(gameTime);
@@ -163,7 +164,7 @@ namespace monogame.States
                 skin.Update(gameTime);
             }
 
-            arrowSprite.UpdateFrame(elapsed);
+            _arrowSprite.UpdateFrame(elapsed);
         }
     }
 }

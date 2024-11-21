@@ -44,7 +44,7 @@ namespace monogame.States
             wallArray = new List<Wall>();
             coinArray = new List<Coin>();
 
-            wallSpawner = new WallSpawner();
+            wallSpawner = new WallSpawner(_content);
             coinSpawner = new CoinSpawner();
 
             coinHUD = new Coin(_content);
@@ -62,12 +62,10 @@ namespace monogame.States
             GameState.Skins = SkinsState.Skins;
             if (GameState.Skins is not null)
             {
-                Console.WriteLine("Skins in not null");
                 for (int i = 0; i < GameState.Skins.Count; i++)
                 {
                     if (GameState.Skins[i].Selected)
                     {
-                        Console.WriteLine("skins[i].Name: " + GameState.Skins[i].Name);
                         player.ChangeSkin(GameState.Skins[i].Name, GameState.Skins[i].Frames, GameState.Skins[i].FPS);
                         player.SkinName = GameState.Skins[i].Name;
                     }
@@ -105,8 +103,13 @@ namespace monogame.States
             }
 
             // Draw HUD.
-            spriteBatch.DrawString(hudFont, "Score: " + Score, new Vector2(32, 64), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
-            spriteBatch.DrawString(hudFont, "Hi Score: " + HiScore, new Vector2(32, 92), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            var color = Color.Black;
+            if (Score >= HiScore)
+            {
+                color = Color.Yellow;
+            }
+            spriteBatch.DrawString(hudFont, "Score: " + Score, new Vector2(32, 64), color, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            spriteBatch.DrawString(hudFont, "Hi Score: " + HiScore, new Vector2(32, 92), color, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             spriteBatch.DrawString(hudFont, " x " + Coins, new Vector2(coinHUD.X + 16, coinHUD.Y - 8), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(coinHUD.X, coinHUD.Y));
 

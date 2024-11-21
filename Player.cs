@@ -11,8 +11,7 @@ namespace monogame
     {
         protected ContentManager _content;
         private AnimatedTexture playerIdleTexture, playerJumpTexture, wingLeft, wingRight;
-        public AnimatedTexture currentTexture;
-
+        private AnimatedTexture currentTexture;
 
         private const float rotation = 0;
         private const float scale = 1f;
@@ -52,39 +51,14 @@ namespace monogame
 
         public void ChangeVelocity(int change)
         {
-            if (this.Velocity < -2)
-            {
-                if (currentTexture != playerIdleTexture && this.Frames-1 == currentTexture.Frame)
-                {
-                    currentTexture.Reset();
-                    currentTexture = playerIdleTexture;
-                }
-            }
-
+            // Check terminal velocity.
             if (Math.Abs(this.Velocity) >= maxVelocity + 1)
             {
                 return;
             }
             this.Velocity += change;
-            Bounce();
-        }
 
-        public void Jump(int _jumpVelocity)
-        {
-            if (this.Velocity > -2)
-            {
-                if (currentTexture != playerJumpTexture)
-                {
-                    currentTexture.Reset();
-                    currentTexture = playerJumpTexture;  
-                }
-                return;
-            }
-            this.Velocity = _jumpVelocity;
-        }
-
-        public void Bounce()
-        {
+            // Bounce
             if (this.Y >= GameState.ScreenHeight - this.Height / 2)
             {
                 if (this.Velocity == 0)
@@ -94,6 +68,15 @@ namespace monogame
                 }
                 this.Velocity = Math.Abs(this.Velocity) / 2;
             }
+        }
+
+        public void Jump(int _jumpVelocity)
+        {
+            if (this.Velocity > -2)
+            {
+                return;
+            }
+            this.Velocity = _jumpVelocity;
         }
 
         public void ChangeSkin(string skin, int frames, int fps)
@@ -108,6 +91,29 @@ namespace monogame
             currentTexture = playerIdleTexture;   
         }
 
+        public void UpdateTexture()
+        {
+            // Set Idle texture.
+            if (this.Velocity < -2)
+            {
+                if (currentTexture != playerIdleTexture && this.Frames-1 == currentTexture.Frame)
+                {
+                    currentTexture.Reset();
+                    currentTexture = playerIdleTexture;
+                }
+            }
+
+            // Set Jump texture.
+            if (this.Velocity > -2)
+            {
+                if (currentTexture != playerJumpTexture)
+                {
+                    currentTexture.Reset();
+                    currentTexture = playerJumpTexture;  
+                }
+            }
+        }
+
         public void Update(float elapsed, GameTime gameTime)
         {
             // Update player animation.
@@ -119,6 +125,8 @@ namespace monogame
             {
                 this.ChangeVelocity(-1);
             }
+
+            this.UpdateTexture();
         }
 
         public void Draw(SpriteBatch _spriteBatch)

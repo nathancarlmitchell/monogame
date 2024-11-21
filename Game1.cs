@@ -54,6 +54,8 @@ namespace monogame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             _currentState = new MenuState(this, graphics.GraphicsDevice, Content);
+                        Background.LoadContent(Content);
+            Background.SetAlpha(0.5);
         }
 
         /// <summary>

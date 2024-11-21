@@ -12,7 +12,7 @@ namespace monogame
         protected ContentManager _content;
 
         // Tiling Texture
-        private Texture2D wallTexture;
+        private static Texture2D wallTexture;
         // How many tiles wide
         private int tileCountWidth = 1;
         // How many tiles high
@@ -23,13 +23,17 @@ namespace monogame
 
         public Wall(ContentManager content)
         {
-            _content = content;
-
-            // Load the texture to tile.
-            wallTexture = _content.Load<Texture2D>("wall");
+            //_content = content;
 
             // Define a drawing rectangle based on the number of tiles wide and high, using the texture dimensions.
-            targetRectangle = new Rectangle(0, 0, wallTexture.Width * tileCountWidth, wallTexture.Height * TileCountHeight);
+            //targetRectangle = new Rectangle(0, 0, wallTexture.Width * tileCountWidth, wallTexture.Height * TileCountHeight);
+        }
+
+        public static void LoadTexture(ContentManager content)
+        {
+            // Load the texture to tile.
+            Console.WriteLine("Texture loaded");
+            wallTexture = content.Load<Texture2D>("wall");
         }
 
         public void Move()
