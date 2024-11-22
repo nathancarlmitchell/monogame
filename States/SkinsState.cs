@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +12,7 @@ namespace monogame.States
 {
     public class SkinsState : State
     {
+        private KeyboardState _currentKeyboard, _previousKeyboard;
         private List<Button> _components;
         private Menu _menu;
         private AnimatedTexture _arrowSprite;
@@ -25,7 +25,7 @@ namespace monogame.States
 
             Background.SetAlpha(0.5f);
 
-            _arrowSprite = new AnimatedTexture(new Vector2(0,0), 0, 1f, 0.5f);
+            _arrowSprite = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
             _arrowSprite.Load(_content, "arrow", 4, 4);
 
             var buttonTexture = _content.Load<Texture2D>("Controls/Button");
@@ -55,10 +55,10 @@ namespace monogame.States
                 if (Skins[i].Selected)
                 {
                     Skins[i].Activate();
-                }           
+                }
             }
 
-            Skins = Skins.OrderBy(o=>o.Cost).ToList();
+            Skins = Skins.OrderBy(o => o.Cost).ToList();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -80,7 +80,7 @@ namespace monogame.States
 
                 if (Skins[i].Locked)
                 {
-                    Skins[i].LoadTexture(_content, "anim_idle_locked");
+                    Skins[i].LoadTexture(_content, "locked", 1, 1);
                     spriteBatch.DrawString(GameState.hudFont, " x " + Skins[i].Cost, new Vector2(_x, _y + 72),
                         Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
                 }
@@ -94,7 +94,7 @@ namespace monogame.States
                 {
                     Skins[i].Position = new Vector2(_x, _y);
                 }
-                
+
                 Skins[i].Draw(spriteBatch);
             }
 
@@ -115,7 +115,7 @@ namespace monogame.States
                 }
 
                 skin.Activate();
-            } 
+            }
             else
             {
                 if (GameState.Coins >= skin.Cost)
@@ -129,9 +129,9 @@ namespace monogame.States
                     skin.Activate();
                     Console.WriteLine("Skin unlocked.");
                 }
-                Console.WriteLine("Skin Locked.");        
+                Console.WriteLine("Skin Locked.");
             }
-            
+
             Util.SaveGameData(GameState.Score, GameState.Coins);
             Util.SaveSkinData();
         }
@@ -139,6 +139,91 @@ namespace monogame.States
         private void BackButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
+        }
+
+        private void LeftArrowKey(int direction)
+        {
+            int selected = 0;
+
+            for (int i = 0; i < Skins.Count; i++)
+            {
+                if (Skins[i].Selected)
+                {
+                    selected = i;
+                }
+            }
+
+            Skins[selected].Deactivate();
+
+            if (selected == 0)
+            {
+                Console.WriteLine("Reset");
+                selected = Skins.Count;
+            }
+
+            bool skinLocked = true;
+            while (skinLocked)
+            {
+                //Index was out of range
+                // selected = 8
+                // direction = 1
+                if (Skins[selected + direction].Locked)
+                {
+                    selected += direction;
+                }
+                else
+                {
+                    skinLocked = false;
+                }
+            }
+            Skins[selected + direction].Activate();
+        }
+
+        private void RightArrowKey()
+        {
+            int selected = 0;
+            int unlockedCount = 0;
+            for (int i = 0; i < Skins.Count; i++)
+            {
+                if (!Skins[i].Locked)
+                    unlockedCount += 1;
+                if (Skins[i].Selected)
+                {
+                    selected = i;
+                }
+            }
+
+            Skins[selected].Deactivate();
+
+            // if (selected <= 0)
+            // {
+            //     Console.WriteLine("Reset");
+            //     selected = Skins.Count;
+            // }
+            if (selected == Skins.Count)
+            {
+                selected = 0;
+            }
+
+            bool skinLocked = true;
+            while (skinLocked)
+            {
+                //Index was out of range
+                // selected = 8
+                // direction = 1
+                if (selected + 1 == Skins.Count)
+                    selected=-1;
+
+                if (Skins[selected + 1].Locked)
+                {
+                    selected += 1;
+                }
+                else
+                {
+                    skinLocked = false;
+                }
+            }
+            Skins[selected + 1].Activate();
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -165,6 +250,27 @@ namespace monogame.States
             }
 
             _arrowSprite.UpdateFrame(elapsed);
+
+            _previousKeyboard = _currentKeyboard;
+            _currentKeyboard = Keyboard.GetState();
+
+            // Check player input.
+            if (_previousKeyboard.IsKeyDown(Keys.Left) && _currentKeyboard.IsKeyUp(Keys.Left))
+            {
+                this.LeftArrowKey(-1);
+                            Util.SaveGameData(GameState.Score, GameState.Coins);
+            Util.SaveSkinData();
+            }
+            if (_previousKeyboard.IsKeyDown(Keys.Right) && _currentKeyboard.IsKeyUp(Keys.Right))
+            {
+                this.RightArrowKey();
+                            Util.SaveGameData(GameState.Score, GameState.Coins);
+            Util.SaveSkinData();
+            }
+            if (_previousKeyboard.IsKeyDown(Keys.Enter) && _currentKeyboard.IsKeyUp(Keys.Enter))
+            {
+                _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
+            }
         }
     }
 }

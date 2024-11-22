@@ -31,9 +31,19 @@ namespace monogame
 
         public static void LoadTexture(ContentManager content)
         {
+            string textureName = "wall";
+            if (GameState.player is not null)
+            {
+                Console.WriteLine(GameState.player.SkinName);
+                if (GameState.player.SkinName == "anim_idle_companion")
+                {
+                    textureName = "ball";
+                }
+            }
+
             // Load the texture to tile.
-            Console.WriteLine("Texture loaded");
-            wallTexture = content.Load<Texture2D>("wall");
+            //Console.WriteLine("Defualt Wall texture loaded.");
+            wallTexture = content.Load<Texture2D>(textureName);
         }
 
         public void Move()

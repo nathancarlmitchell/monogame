@@ -49,6 +49,12 @@ namespace monogame
             _texture.Load(content, texture, Frames, FPS);
         }
 
+        public void LoadTexture(ContentManager content, String texture, int _frames, int _fps)
+        {
+            _texture = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
+            _texture.Load(content, texture, _frames, _fps);
+        }
+
 
         public void Activate()
         {
