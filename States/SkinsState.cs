@@ -16,6 +16,7 @@ namespace monogame.States
         private List<Button> _components;
         private Menu _menu;
         private AnimatedTexture _arrowSprite;
+        //private bool _acceptLeftInput, _acceptRightInput = true;
         public static List<Skin> Skins { get; set; }
 
         public SkinsState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
@@ -251,23 +252,25 @@ namespace monogame.States
 
             _arrowSprite.UpdateFrame(elapsed);
 
+            // Check player input.
             _previousKeyboard = _currentKeyboard;
             _currentKeyboard = Keyboard.GetState();
-
-            // Check player input.
-            if (_previousKeyboard.IsKeyDown(Keys.Left) && _currentKeyboard.IsKeyUp(Keys.Left))
+            // Left.
+            if (_currentKeyboard.IsKeyDown(Keys.Left) && !_previousKeyboard.IsKeyDown(Keys.Left))
             {
                 this.LeftArrowKey(-1);
-                            Util.SaveGameData(GameState.Score, GameState.Coins);
-            Util.SaveSkinData();
+                Util.SaveGameData(GameState.Score, GameState.Coins);
+                Util.SaveSkinData();
             }
-            if (_previousKeyboard.IsKeyDown(Keys.Right) && _currentKeyboard.IsKeyUp(Keys.Right))
+            // Right.
+            if (_currentKeyboard.IsKeyDown(Keys.Right) && !_previousKeyboard.IsKeyDown(Keys.Right))
             {
                 this.RightArrowKey();
-                            Util.SaveGameData(GameState.Score, GameState.Coins);
-            Util.SaveSkinData();
+                Util.SaveGameData(GameState.Score, GameState.Coins);
+                Util.SaveSkinData();
             }
-            if (_previousKeyboard.IsKeyDown(Keys.Enter) && _currentKeyboard.IsKeyUp(Keys.Enter))
+            // Enter.
+            if (_currentKeyboard.IsKeyDown(Keys.Enter) && !_previousKeyboard.IsKeyUp(Keys.Enter))
             {
                 _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
             }
