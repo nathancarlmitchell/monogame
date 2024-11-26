@@ -56,9 +56,11 @@ namespace monogame
             {
                 return;
             }
+
+            // Change velocity.
             this.Velocity += change;
 
-            // Bounce
+            // Bounce bottom of screen.
             if (this.Y >= GameState.ScreenHeight - this.Height / 2)
             {
                 if (this.Velocity == 0)
@@ -88,7 +90,7 @@ namespace monogame
             playerIdleTexture.Load(_content, "anim_idle_" + _name, frames, fps);
             playerJumpTexture.Load(_content, "anim_jump_" + _name, frames, fps);
 
-            currentTexture = playerIdleTexture;   
+            currentTexture = playerIdleTexture;
         }
 
         public void UpdateTexture()
@@ -96,7 +98,7 @@ namespace monogame
             // Set Idle texture.
             if (this.Velocity < -2)
             {
-                if (currentTexture != playerIdleTexture && this.Frames-1 == currentTexture.Frame)
+                if (currentTexture != playerIdleTexture && this.Frames - 1 == currentTexture.Frame)
                 {
                     currentTexture.Reset();
                     currentTexture = playerIdleTexture;
@@ -109,11 +111,14 @@ namespace monogame
                 if (currentTexture != playerJumpTexture)
                 {
                     currentTexture.Reset();
-                    currentTexture = playerJumpTexture;  
+                    currentTexture = playerJumpTexture;
                 }
             }
         }
 
+        private int velocityCooldown = 0;
+        private int skip = 0;
+        //private int test = 0;
         public void Update(float elapsed, GameTime gameTime)
         {
             // Update player animation.
@@ -121,8 +126,21 @@ namespace monogame
 
             // Update player velocity.
             this.Y -= this.Velocity / 2;
-            if ((int)gameTime.TotalGameTime.TotalMilliseconds % (2) == 0)
+           
+            // if ((int)gameTime.TotalGameTime.TotalMilliseconds % (2) == 0)
+            velocityCooldown++;
+            if (velocityCooldown >= 2)
             {
+                skip++;
+                if (skip >= 2)
+                {
+                    skip = 0;
+                    velocityCooldown = 1;
+                }
+                else
+                {
+                    velocityCooldown = 0;
+                }
                 this.ChangeVelocity(-1);
             }
 
