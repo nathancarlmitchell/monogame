@@ -135,6 +135,8 @@ namespace monogame.States
 
         }
 
+        private int wallCooldown = 0;
+        private int coinCooldown = 0;
         public override void Update(GameTime gameTime)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -190,14 +192,23 @@ namespace monogame.States
             }
 
             // Spawn a wall.
-            if ((int)gameTime.TotalGameTime.TotalMilliseconds % (3000) == 0)
+            wallCooldown++;
+            if (wallCooldown >= 180)
             {
+                wallCooldown = 0;
                 wallArray.AddRange(wallSpawner.Spawn(_content));
             }
+            // if ((int)gameTime.TotalGameTime.TotalMilliseconds % (3000) == 0)
+            // {
+            //     Console.WriteLine(wallCooldown);
+            // }
 
             // Spawn a coin.
-            if ((int)gameTime.TotalGameTime.TotalMilliseconds % (6000) == 0)
+            //if ((int)gameTime.TotalGameTime.TotalMilliseconds % (6000) == 0)
+            coinCooldown++;
+            if (coinCooldown >= 360)
             {
+                coinCooldown = 0;
                 coinArray.Add(coinSpawner.Spawn(_content));
             }
 
