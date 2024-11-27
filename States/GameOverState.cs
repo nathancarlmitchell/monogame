@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using monogame.Controls;
 
 namespace monogame.States
@@ -91,10 +92,7 @@ namespace monogame.States
 
         private void NewGameButton_Click(object sender, EventArgs e)
         {
-            Game1._gameState = null;
-            GameState.Score = 0;
-            GameState.Coins = 0;
-            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+            NewGame();
         }
 
         private void MainMenuButton_Click(object sender, EventArgs e)
@@ -131,11 +129,22 @@ namespace monogame.States
             // Check player input.
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
-                Game1._gameState = null;
-                GameState.Score = 0;
-                GameState.Coins = 0;
-                _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+                NewGame();
             }
+
+            TouchCollection touchState = TouchPanel.GetState();
+            touchState = TouchPanel.GetState();
+            if (touchState.AnyTouch())
+            {
+                NewGame();
+            }
+        }
+        public void NewGame()
+        {
+            Game1._gameState = null;
+            GameState.Score = 0;
+            GameState.Coins = 0;
+            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }
     }
 }

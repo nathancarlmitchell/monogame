@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using Java.Lang;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using monogame.Controls;
 
 namespace monogame.States
@@ -14,6 +16,7 @@ namespace monogame.States
         private List<Button> _components;
         public static SpriteFont titleFont;
         private Menu _mainMenu;
+        private TouchCollection touchState;
 
         public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
@@ -79,6 +82,11 @@ namespace monogame.States
             spriteBatch.End();
         }
 
+        public void onClick()
+        {
+            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+        }
+
         private void loadSkinsButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new SkinsState(_game, _graphicsDevice, _content));
@@ -108,6 +116,20 @@ namespace monogame.States
             {
                 _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
+
+
+            //Console.WriteLine(touchState);
+
+            //TouchCollection touchCollection = TouchPanel.GetState();
+            //foreach (TouchLocation tl in touchCollection)
+            //{
+            touchState = TouchPanel.GetState();
+            if (touchState.AnyTouch())
+            {
+                Console.WriteLine("pressed");
+                _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+            }
+            //}
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)

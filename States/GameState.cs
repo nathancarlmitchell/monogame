@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace monogame.States
 {
@@ -233,6 +234,13 @@ namespace monogame.States
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
                 _game.ChangeState(new GameOverState(_game, _graphicsDevice, _content));
+            }
+
+            TouchCollection touchState = TouchPanel.GetState();
+            touchState = TouchPanel.GetState();
+            if (touchState.AnyTouch())
+            {
+                player.Jump(player.JumpVelocity);
             }
 
             // Check player bounds
