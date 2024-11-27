@@ -13,7 +13,7 @@ namespace monogame.States
     public class GameState : State
     {
         public static SpriteFont hudFont, debugFont;
-        private Texture2D wallTexture;
+        private Texture2D wallTexture, boostTexture;
         public static Player player;
         public static List<Skin> Skins { get; set; }
         public static Coin coinHUD;
@@ -41,6 +41,8 @@ namespace monogame.States
 
             wallTexture = new Texture2D(_graphicsDevice, 1, 1);
             wallTexture.SetData(new[] { Color.White });
+
+            boostTexture = _content.Load<Texture2D>("boost");
 
             wallArray = new List<Wall>();
             coinArray = new List<Coin>();
@@ -81,6 +83,12 @@ namespace monogame.States
 
             // Draw background.
             Background.Draw(gameTime, spriteBatch);
+
+            // Draw boost button on mobile.
+            if (OperatingSystem.IsAndroid())
+            {
+                spriteBatch.Draw(boostTexture, new Vector2(0, ScreenHeight - 128), Color.White);
+            }
 
             // Draw player.
             player.Draw(spriteBatch);
@@ -231,9 +239,18 @@ namespace monogame.States
                 _game.ChangeState(new GameOverState(_game, _graphicsDevice, _content));
             }
 
+            // Check touch input.
             TouchCollection touchState = TouchPanel.GetState();
             if (touchState.AnyTouch())
             {
+                int x = (int)touchState.GetPosition().X;
+                int y = (int)touchState.GetPosition().Y;
+
+                if (x < 128 && y > GameState.ScreenHeight - 128)
+                {
+                    player.Jump(player.JumpVelocity * 2);
+                    return;
+                }
                 player.Jump(player.JumpVelocity);
             }
 

@@ -132,6 +132,7 @@ namespace monogame.States
                 NewGame();
             }
 
+            // Check touch input.
             TouchCollection touchState = TouchPanel.GetState();
             if (touchState.AnyTouch())
             {

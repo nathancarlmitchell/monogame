@@ -1,4 +1,8 @@
-﻿using Microsoft.Xna.Framework.Input.Touch;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace monogame
 {
@@ -22,6 +26,18 @@ namespace monogame
                 }
             }
             return false;
+        }
+
+        public static Vector2 GetPosition(this TouchCollection touchState)
+        {
+            foreach (TouchLocation location in touchState)
+            {
+                if (location.State == TouchLocationState.Pressed || location.State == TouchLocationState.Moved)
+                {
+                    return location.Position;
+                }
+            }
+            return new Vector2(0,0);
         }
     }
 }

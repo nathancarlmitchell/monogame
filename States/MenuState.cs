@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
-using Java.Lang;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -116,10 +114,12 @@ namespace monogame.States
                 _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
 
+            // Check touch input.
             TouchCollection touchState = TouchPanel.GetState();
             if (touchState.AnyTouch())
             {
                 Console.WriteLine("pressed");
+                Console.WriteLine(touchState.GetPosition());
                 _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
         }
