@@ -36,9 +36,15 @@ namespace monogame
             //this.IsFixedTimeStep = true;
             //this.TargetElapsedTime = TimeSpan.FromSeconds(1 / 120.0);    // Update() is called every 30 times each second / 30 FPS
             //this.IsFixedTimeStep = false;
-            graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            if (OperatingSystem.IsAndroid())
+            {
+                graphics.IsFullScreen = true;
+            }
+            else
+            {
+                graphics.PreferredBackBufferWidth = 1280;
+                graphics.PreferredBackBufferHeight = 720;
+            }
             //graphics.PreferMultiSampling = true;
             graphics.ApplyChanges();
 
@@ -51,10 +57,10 @@ namespace monogame
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
+            Util.CheckOS();
             spriteBatch = new SpriteBatch(GraphicsDevice);
             _currentState = new MenuState(this, graphics.GraphicsDevice, Content);
-                        Background.LoadContent(Content);
+            Background.LoadContent(Content);
             Background.SetAlpha(0.5);
         }
 
