@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -93,6 +94,18 @@ namespace monogame
             currentTexture = playerIdleTexture;
         }
 
+        private int r = 0;
+        public void Flap()
+        {
+            int rr = (int)((r * Math.PI * 2) * 1);
+            //Console.WriteLine((float)(int)(r * Math.PI * 2));
+            //Console.WriteLine(r);
+            this.wingLeft.Rotation = rr;
+            this.wingRight.Rotation = -rr;
+            //this.wingLeft.Rotation = r;
+            r++;
+        }
+
         public void UpdateTexture()
         {
             // Set Idle texture.
@@ -108,8 +121,10 @@ namespace monogame
             // Set Jump texture.
             if (this.Velocity > -2)
             {
+                this.Flap();
                 if (currentTexture != playerJumpTexture)
                 {
+                    
                     currentTexture.Reset();
                     currentTexture = playerJumpTexture;
                 }

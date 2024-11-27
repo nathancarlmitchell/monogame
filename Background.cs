@@ -84,18 +84,26 @@ namespace monogame.States
             // remove sprites if they're not needed
         }
 
+        private static int cloudCooldown = 0;
+        private static int bgCooldown = 0;
         public static void Update(GameTime gameTime)
         {
             UpdateAlpha();
 
-            if ((int)gameTime.TotalGameTime.TotalMilliseconds % (1000) == 0)
+            cloudCooldown++;
+            //if ((int)gameTime.TotalGameTime.TotalMilliseconds % (1000) == 0)
+            if (cloudCooldown > 60)
             {
+                cloudCooldown = 0;
                 // Update cloud posistion.
                 cloud.X -= 1;
             }
 
-            if ((int)gameTime.TotalGameTime.TotalMilliseconds % (3000) == 0)
+            bgCooldown++;
+            //if ((int)gameTime.TotalGameTime.TotalMilliseconds % (3000) == 0)
+            if (bgCooldown > 180)
             {
+                bgCooldown = 0;
                 // Update background position.
                 bg.X -= 2;
             }
