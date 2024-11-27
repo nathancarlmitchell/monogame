@@ -16,7 +16,6 @@ namespace monogame.States
         private List<Button> _components;
         public static SpriteFont titleFont;
         private Menu _mainMenu;
-        private TouchCollection touchState;
 
         public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
           : base(game, graphicsDevice, content)
@@ -117,19 +116,12 @@ namespace monogame.States
                 _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
 
-
-            //Console.WriteLine(touchState);
-
-            //TouchCollection touchCollection = TouchPanel.GetState();
-            //foreach (TouchLocation tl in touchCollection)
-            //{
-            touchState = TouchPanel.GetState();
+            TouchCollection touchState = TouchPanel.GetState();
             if (touchState.AnyTouch())
             {
                 Console.WriteLine("pressed");
                 _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
-            //}
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)

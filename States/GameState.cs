@@ -199,13 +199,8 @@ namespace monogame.States
                 wallCooldown = 0;
                 wallArray.AddRange(wallSpawner.Spawn(_content));
             }
-            // if ((int)gameTime.TotalGameTime.TotalMilliseconds % (3000) == 0)
-            // {
-            //     Console.WriteLine(wallCooldown);
-            // }
 
             // Spawn a coin.
-            //if ((int)gameTime.TotalGameTime.TotalMilliseconds % (6000) == 0)
             coinCooldown++;
             if (coinCooldown >= 360)
             {
@@ -237,7 +232,6 @@ namespace monogame.States
             }
 
             TouchCollection touchState = TouchPanel.GetState();
-            touchState = TouchPanel.GetState();
             if (touchState.AnyTouch())
             {
                 player.Jump(player.JumpVelocity);

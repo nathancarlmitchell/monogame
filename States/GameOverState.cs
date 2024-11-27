@@ -133,7 +133,6 @@ namespace monogame.States
             }
 
             TouchCollection touchState = TouchPanel.GetState();
-            touchState = TouchPanel.GetState();
             if (touchState.AnyTouch())
             {
                 NewGame();
