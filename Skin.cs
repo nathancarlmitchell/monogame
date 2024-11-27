@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using monogame.States;
 
 namespace monogame
@@ -86,6 +87,19 @@ namespace monogame
                 _isHovering = true;
 
                 if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed)
+                {
+                    Click?.Invoke(this, new EventArgs());
+                }
+            }
+
+            // Check touch input.
+            TouchCollection touchState = TouchPanel.GetState();
+            if (touchState.AnyTouch())
+            {
+                int x = (int)touchState.GetPosition().X;
+                int y = (int)touchState.GetPosition().Y;
+                var touchRectangle = new Rectangle(x, y, 1, 1);
+                if (touchRectangle.Intersects(Rectangle))
                 {
                     Click?.Invoke(this, new EventArgs());
                 }

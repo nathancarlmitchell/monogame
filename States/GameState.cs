@@ -84,12 +84,6 @@ namespace monogame.States
             // Draw background.
             Background.Draw(gameTime, spriteBatch);
 
-            // Draw boost button on mobile.
-            if (OperatingSystem.IsAndroid())
-            {
-                spriteBatch.Draw(boostTexture, new Vector2(0, ScreenHeight - 128), Color.White);
-            }
-
             // Draw player.
             player.Draw(spriteBatch);
 
@@ -104,6 +98,12 @@ namespace monogame.States
 
 
             spriteBatch.Begin();
+
+            // Draw boost button on mobile.
+            if (OperatingSystem.IsAndroid())
+            {
+                spriteBatch.Draw(boostTexture, new Vector2(0, ScreenHeight - 128), Color.White);
+            }
 
             // Draw coins.
             for (int i = 0; i < coinArray.Count; i++)
@@ -121,6 +121,12 @@ namespace monogame.States
             spriteBatch.DrawString(hudFont, "Hi Score: " + HiScore, new Vector2(32, 92), color, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             spriteBatch.DrawString(hudFont, " x " + Coins, new Vector2(coinHUD.X + 16, coinHUD.Y - 8), Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
             coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(coinHUD.X, coinHUD.Y));
+
+            // Draw boost button on mobile.
+            if (OperatingSystem.IsAndroid())
+            {
+                spriteBatch.Draw(boostTexture, new Vector2(0, ScreenHeight - 128), Color.White);
+            }
 
             // Draw debug.
             if (_debug)
@@ -255,14 +261,6 @@ namespace monogame.States
             }
 
             // Check player bounds
-            // if (player.X > ScreenWidth - player.Width / 2)
-            // {
-            //     player.X = ScreenWidth - player.Width / 2;
-            // }
-            // else if (player.X < player.Width / 2)
-            // {
-            //     player.X = player.Width / 2;
-            // }
             if (player.Y > ScreenHeight - player.Height / 2)
             {
                 player.Y = ScreenHeight - player.Height / 2;

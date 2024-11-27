@@ -115,13 +115,13 @@ namespace monogame.States
             }
 
             // Check touch input.
-            TouchCollection touchState = TouchPanel.GetState();
-            if (touchState.AnyTouch())
-            {
-                Console.WriteLine("pressed");
-                Console.WriteLine(touchState.GetPosition());
-                _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
-            }
+            //TouchCollection touchState = TouchPanel.GetState();
+            //if (touchState.AnyTouch())
+            //{
+            //    Console.WriteLine("pressed");
+            //    Console.WriteLine(touchState.GetPosition());
+            //    _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+            //}
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)

@@ -28,7 +28,7 @@ namespace monogame.States
             _game = game;
             _graphicsDevice = graphicsDevice;
             _content = content;
-            
+
             _centerWidth = (_graphicsDevice.Viewport.Width / 2);
             _centerHeight = (_graphicsDevice.Viewport.Height / 2);
 

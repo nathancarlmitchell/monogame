@@ -139,7 +139,7 @@ namespace monogame.States
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
+            MainMenu();
         }
 
         private void LeftArrowKey(int direction)
@@ -232,6 +232,11 @@ namespace monogame.States
             //throw new NotImplementedException();
         }
 
+        public void MainMenu()
+        {
+            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
+        }
+
         public override void Update(GameTime gameTime)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -272,7 +277,7 @@ namespace monogame.States
             // Enter.
             if (_currentKeyboard.IsKeyDown(Keys.Enter) && !_previousKeyboard.IsKeyUp(Keys.Enter))
             {
-                _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
+                MainMenu();
             }
         }
     }

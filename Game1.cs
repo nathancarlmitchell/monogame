@@ -9,7 +9,7 @@ namespace monogame
     {
         public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
-        public static State _gameState;
+        public static State _gameState, _skinState, _menuState;
         private State _currentState, _nextState;
 
         public void ChangeState(State state)
@@ -83,10 +83,10 @@ namespace monogame
             if (_nextState != null)
             {
                 //Console.WriteLine(_nextState.GetType());
-                if (_gameState != null)
-                {
-                    Console.WriteLine("GameState is not null");
-                }
+                //if (_gameState != null)
+                //{
+                //    Console.WriteLine("GameState is not null");
+                //}
 
                 if (_nextState is GameState && _gameState != null)
                 {
@@ -98,6 +98,28 @@ namespace monogame
                     _gameState = _nextState;
                     _currentState = _nextState;
                     Console.WriteLine("_nextState is GameState");
+                }
+                else if (_nextState is SkinsState && _skinState != null)
+                {
+                    _currentState = _skinState;
+                    Console.WriteLine("restoring SkinSate");
+                }
+                else if (_nextState is SkinsState)
+                {
+                    _skinState = _nextState;
+                    _currentState = _nextState;
+                    Console.WriteLine("_nextState is SkinState");
+                }
+                else if (_nextState is MenuState && _menuState != null)
+                {
+                    _currentState = _menuState;
+                    Console.WriteLine("restoring MenuState");
+                }
+                else if (_nextState is MenuState)
+                {
+                    _menuState = _nextState;
+                    _currentState = _nextState;
+                    Console.WriteLine("_nextState is MenuState");
                 }
                 else
                 {

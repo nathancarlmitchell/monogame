@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using System;
 
 namespace monogame.Controls
@@ -61,6 +62,7 @@ namespace monogame.Controls
             }
         }
 
+        //private bool pressed = false;
         public void Update(GameTime gameTime)
         {
             _previousMouse = _currentMouse;
@@ -79,8 +81,30 @@ namespace monogame.Controls
                     Click?.Invoke(this, new EventArgs());
                 }
             }
-        }
 
+            // Check touch input.
+            TouchCollection touchState = TouchPanel.GetState();
+            if (touchState.AnyTouch())
+            {
+                //if (!pressed)
+                //{
+                    //Console.WriteLine("Not Pressed");
+                    int x = (int)touchState.GetPosition().X;
+                    int y = (int)touchState.GetPosition().Y;
+                    var touchRectangle = new Rectangle(x, y, 1, 1);
+                    if (touchRectangle.Intersects(Rectangle))
+                    {
+                        //pressed = true;
+                        Click?.Invoke(this, new EventArgs());
+                    }
+                //}
+            }
+            //if (touchState.Released())
+            //{
+            //    Console.WriteLine("Released");
+            //    pressed = false;
+            //}
+        }
         #endregion
     }
 }
